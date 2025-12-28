@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mutation Mailbox</title>
+<link rel="stylesheet" href="../css/style.css">
+<style>
+  /* Cyberpunk theme overrides */
+  body {
+    font-family: 'Courier New', monospace;
+    background: #0f0f1a;
+    color: #fff;
+    display: flex;
+    height: 100vh;
+    margin: 0;
+  }
+  #sidebar {
+    width: 30%;
+    background: linear-gradient(to bottom, #0a0a1f, #1b0a3a);
+    border-right: 2px solid #ff00ff;
+    overflow-y: auto;
+    padding: 10px;
+  }
+  #sidebar h2 {
+    text-align: center;
+    padding: 10px;
+    color: #ff00ff;
+    text-shadow: 0 0 8px #ff00ff;
+  }
+  .email-item {
+    padding: 12px;
+    border-bottom: 1px solid #550055;
+    cursor: pointer;
+    transition: 0.2s;
+  }
+  .email-item:hover {
+    background: rgba(255,0,255,0.2);
+  }
+  .email-subject {
+    font-weight: bold;
+    color: #fff;
+  }
+  #content {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+  }
+  h3 {
+    color: #00ffff;
+    text-shadow: 0 0 6px #00ffff;
+  }
+  .email-body {
+    line-height: 1.5;
+  }
+  img {
+    max-width: 100%;
+    margin-top: 10px;
+    border: 1px solid #ff00ff;
+    box-shadow: 0 0 8px #ff00ff;
+  }
+</style>
+</head>
+<body>
+
+<div id="sidebar">
+  <h2>Inbox</h2>
+  <div id="email-list"></div>
+  <div style="margin-top:20px;">
+    <a href="../index.html" 
+       style="display:inline-block; padding:10px 15px; background:#ff00ff; color:#0f0f1a; 
+              text-decoration:none; font-weight:bold; border-radius:5px; text-align:center;
+              box-shadow: 0 0 8px #ff00ff;">
+        &larr; Back to Home
+    </a>
+</div>
+</div>
+
+<div id="content">
+  <h2>Mutation Containment Program</h2>
+  <div id="email-content">
+    <p></p>
+  </div>
+</div>
+
+<script>
+// Example mail data
+const emails = [
+  {
+    id: 1,
+    sender: "ops@dbc.gov",
+    subject: "[CLASSIFIED] New Mutation Report",
+    text: `### [CLASSIFIED – LEVEL IV ACCESS]<br>
+Anomalous Fauna Registry – Entry #001<br><br>
+<strong>Designation:</strong> CHABLIS<br>
+<strong>Known Alias:</strong> “The Ninefold Gale”<br>
+<strong>Species Origin:</strong> <em>Pavo mutatus</em><br>
+<strong>Class:</strong> Ventus<br><br>
+<strong>Last Recorded Location:</strong> Mt. Fuji Region, Japan<br>
+<strong>Mutation Index:</strong> ☠️☠️☠️☠️☠️☠️☠️☠️☠️<br>
+<strong>Threat Level:</strong> Extreme<br><br>
+<strong>Physical Description:</strong> Large avian entity with nine cranial structures.<br>
+<strong>Behavioral Notes:</strong> Capable of rapid repositioning, [REDACTED]<br>
+<strong>Internal Directive:</strong> Do not engage during high wind conditions.`,
+    images: ["sketches/chablis.png"]
+  },
+  // Add more mails here
+];
+
+const emailListDiv = document.getElementById("email-list");
+const emailContentDiv = document.getElementById("email-content");
+
+function renderEmailList() {
+  emailListDiv.innerHTML = "";
+  emails.forEach(email => {
+    const item = document.createElement("div");
+    item.className = "email-item";
+    item.onclick = () => openEmail(email);
+
+    const subjectDiv = document.createElement("div");
+    subjectDiv.className = "email-subject";
+    subjectDiv.innerHTML = email.subject;
+
+    item.appendChild(subjectDiv);
+    emailListDiv.appendChild(item);
+  });
+}
+
+function openEmail(email) {
+  // Display the text
+  emailContentDiv.innerHTML = `<h3>${email.subject}</h3>
+    <p><strong>From:</strong> ${email.sender}</p>
+    <div class="email-body">${email.text}</div>
+    <div class="email-images"></div>`;
+
+  // Display images
+  const imagesDiv = emailContentDiv.querySelector(".email-images");
+  if (email.images && email.images.length > 0) {
+    email.images.forEach(src => {
+      const img = document.createElement("img");
+      img.src = src;
+      imagesDiv.appendChild(img);
+    });
+  }
+}
+
+renderEmailList();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,76 @@
+/* Basic Cyberpunk Styling */
+body {
+    margin: 0;
+    font-family: 'Orbitron', monospace;
+    background: #0a0a0a;
+    color: #00f0ff;
+}
+
+header {
+    text-align: center;
+    padding: 20px;
+    text-shadow: 0 0 10px #ff00ff, 0 0 20px #00ffff;
+}
+
+.lore {
+    text-align: center;
+    font-size: 1.2em;
+    margin: 20px;
+    min-height: 50px;
+}
+
+.features {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    margin-top: 30px;
+}
+
+.feature-btn {
+    padding: 15px 25px;
+    text-decoration: none;
+    color: #fff;
+    border: 2px solid #ff00ff;
+    border-radius: 5px;
+    text-shadow: 0 0 5px #ff00ff;
+    transition: 0.3s;
+}
+
+.feature-btn:hover {
+    background-color: #ff00ff;
+    color: #000;
+    box-shadow: 0 0 20px #ff00ff;
+}
+
+/* Modal Styles */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 10;
+    left: 0; top: 0;
+    width: 100%; height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.9);
+}
+
+.modal-content {
+    background-color: #111;
+    margin: 10% auto;
+    padding: 20px;
+    border: 2px solid #00ffff;
+    width: 80%;
+    color: #fff;
+}
+
+.close {
+    color: #ff00ff;
+    float: right;
+    font-size: 28px;
+    cursor: pointer;
+}
+
+.mail-content {
+    margin-top: 15px;
+    padding: 10px;
+    border-top: 1px solid #00ffff;
+}
