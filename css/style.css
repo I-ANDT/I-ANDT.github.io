@@ -42,6 +42,7 @@ header {
     box-shadow: 0 0 20px #ff00ff;
 }
 
+
 /* Modal Styles */
 .modal {
     display: none;
@@ -73,4 +74,54 @@ header {
     margin-top: 15px;
     padding: 10px;
     border-top: 1px solid #00ffff;
+}
+
+.card-collection {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 30px;
+}
+
+.card {
+    background: #111;
+    border: 2px solid #ff00ff;
+    border-radius: 10px;
+    width: 300px;          /* wider */
+    padding: 10px;         /* consistent padding */
+    box-shadow: 0 0 10px #ff00ff;
+    text-align: center;
+    transition: transform 0.2s;
+    overflow: hidden;      /* ensures content doesn’t stretch card vertically */
+}
+
+.card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 20px #ff00ff;
+}
+
+.card img {
+    width: 100%;           /* fills card width */
+    height: 120px;         /* fixed height to prevent card from growing taller */
+    object-fit: cover;     /* crop/scale image nicely */
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+.card-info p {
+    margin: 5px 0;
+    text-align: left;
+}
+
+.card-id {
+    margin: 5px 0;
+    text-align: middle;
+}
+
+.home-btn {
+    display: block;
+    width: 200px;           /* fixed width */
+    margin: 30px auto 0;    /* center horizontally, add top margin */
+    text-align: center;
 }

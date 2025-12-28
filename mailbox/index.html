@@ -6,28 +6,24 @@
 <title>Mutation Mailbox</title>
 <link rel="stylesheet" href="../css/style.css">
 <style>
-  /* Cyberpunk theme overrides */
+  /* Layout-specific overrides */
   body {
-    font-family: 'Courier New', monospace;
-    background: #0f0f1a;
-    color: #fff;
     display: flex;
     height: 100vh;
     margin: 0;
   }
   #sidebar {
     width: 30%;
-    background: linear-gradient(to bottom, #0a0a1f, #1b0a3a);
-    border-right: 2px solid #ff00ff;
     overflow-y: auto;
     padding: 10px;
   }
-  #sidebar h2 {
-    text-align: center;
-    padding: 10px;
-    color: #ff00ff;
-    text-shadow: 0 0 8px #ff00ff;
+  #content {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
   }
+
+  /* Keep old email item styling */
   .email-item {
     padding: 12px;
     border-bottom: 1px solid #550055;
@@ -41,23 +37,16 @@
     font-weight: bold;
     color: #fff;
   }
-  #content {
-    flex: 1;
-    padding: 20px;
-    overflow-y: auto;
+
+  .home-btn {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 10px 15px;
+    text-align: center;
   }
-  h3 {
-    color: #00ffff;
-    text-shadow: 0 0 6px #00ffff;
-  }
-  .email-body {
-    line-height: 1.5;
-  }
-  img {
+  .email-images img {
     max-width: 100%;
     margin-top: 10px;
-    border: 1px solid #ff00ff;
-    box-shadow: 0 0 8px #ff00ff;
   }
 </style>
 </head>
@@ -66,21 +55,12 @@
 <div id="sidebar">
   <h2>Inbox</h2>
   <div id="email-list"></div>
-  <div style="margin-top:20px;">
-    <a href="../index.html" 
-       style="display:inline-block; padding:10px 15px; background:#ff00ff; color:#0f0f1a; 
-              text-decoration:none; font-weight:bold; border-radius:5px; text-align:center;
-              box-shadow: 0 0 8px #ff00ff;">
-        &larr; Back to Home
-    </a>
-</div>
+  <a href="../index.html" class="feature-btn home-btn">← Back to Home</a>
 </div>
 
 <div id="content">
   <h2>Mutation Containment Program</h2>
-  <div id="email-content">
-    <p></p>
-  </div>
+  <div id="email-content"></div>
 </div>
 
 <script>
@@ -89,22 +69,24 @@ const emails = [
   {
     id: 1,
     sender: "ops@dbc.gov",
+    date: "2050-12-28",
     subject: "[CLASSIFIED] New Mutation Report",
-    text: `### [CLASSIFIED – LEVEL IV ACCESS]<br>
-Anomalous Fauna Registry – Entry #001<br><br>
+    text: `<h3>[CLASSIFIED – LEVEL IV ACCESS]</h3>
+<strong>Anomalous Fauna Registry – Entry #001</strong><br>
 <strong>Designation:</strong> CHABLIS<br>
 <strong>Known Alias:</strong> “The Ninefold Gale”<br>
 <strong>Species Origin:</strong> <em>Pavo mutatus</em><br>
 <strong>Class:</strong> Ventus<br><br>
-<strong>Last Recorded Location:</strong> Mt. Fuji Region, Japan<br>
+<strong>Last Recorded Location:</strong> Northern shore of Lake Kawaguchi, Yamanashi Prefecture, Japan<br>
 <strong>Mutation Index:</strong> ☠️☠️☠️☠️☠️☠️☠️☠️☠️<br>
 <strong>Threat Level:</strong> Extreme<br><br>
 <strong>Physical Description:</strong> Large avian entity with nine cranial structures.<br>
 <strong>Behavioral Notes:</strong> Capable of rapid repositioning, [REDACTED]<br>
-<strong>Internal Directive:</strong> Do not engage during high wind conditions.`,
-    images: ["sketches/chablis.png"]
-  },
-  // Add more mails here
+<p><strong>Internal Directive:</strong></p>
+<blockquote>Do not engage during high wind conditions.</blockquote>`,
+    images: ["sketches/chablis.png"],
+    drop: "tba"
+  }
 ];
 
 const emailListDiv = document.getElementById("email-list");
@@ -127,13 +109,14 @@ function renderEmailList() {
 }
 
 function openEmail(email) {
-  // Display the text
   emailContentDiv.innerHTML = `<h3>${email.subject}</h3>
     <p><strong>From:</strong> ${email.sender}</p>
+    <p><strong>Date:</strong> ${email.date}</p>
+    <hr>
     <div class="email-body">${email.text}</div>
+    <p><strong>Operational Deployment:</strong> ${email.drop}</p>
     <div class="email-images"></div>`;
 
-  // Display images
   const imagesDiv = emailContentDiv.querySelector(".email-images");
   if (email.images && email.images.length > 0) {
     email.images.forEach(src => {
