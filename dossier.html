@@ -1,59 +1,105 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Chapter 1 Collection</title>
-<link rel="stylesheet" href="css/style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chapter 1 Collection</title>
+    <link rel="stylesheet" href="css/style.css">
 </head>
+
 <body>
-<div class="container">
-    <header>
-        <h1>Chapter 1: Biohazard Assessment</h1>
-    </header>
+    <div class="container">
+        <header>
+            <h1>Chapter 1: Biohazard Assessment</h1>
+        </header>
 
-    <section class="card-collection">
-        <div class="card">
-            <div class="card-id">#001</div>
-            <img src="cards/secret.png" alt="Chablis Image">
-            <div class="card-info">
-                <p>🆔 Codename: CHABLIS</p>
-                <p>⚡ Speed: 90</p>
-                <p>💪 Strength: 50</p>
-                <p>📍 Location: Lake Kawaguchi, Mt. Fuji, Japan</p>
-                <p>✨ Special Ability: Wind Manipulation</p>
+        <section class="card-collection">
+            <div class="card">
+                <div class="card-inner">
+
+                    <!-- FRONT -->
+                    <div class="card-front">
+                        <div class="card-id">#001</div>
+                        <img src="cards/chablis_bg.png" alt="Chablis Image">
+                        <div class="card-info">
+                            <p>🆔 Codename: CHABLIS</p>
+                            <p>⚡ Speed: 85</p>
+                            <p>💪 Strength: 50</p>
+                            <p>📍 Location: Lake Kawaguchi, Mt. Fuji, Japan</p>
+                            <p>✨ Special Ability: Wind Manipulation</p>
+                        </div>
+                    </div>
+
+                    <!-- BACK -->
+                    <div class="card-back">
+                        <img src="cards/chablis.png" alt="Chablis Back">
+                    </div>
+
+                </div>
             </div>
-        </div>
 
-        <div class="card">
-            <div class="card-id">#002</div>
-            <img src="cards/secret.png" alt="Card 002">
-            <div class="card-info">
-                <p>🆔 Codename: MALBEC</p>
-                <p>⚡ Speed: Unknown</p>
-                <p>💪 Strength: Unknown</p>
-                <p>📍 Location: Old South Ferry Loop, Manhattan</p>
-                <p>✨ Special Ability: Unknown</p>
+
+            <div class="card">
+                <div class="card-inner">
+
+                    <!-- FRONT -->
+                    <div class="card-front">
+                        <div class="card-id">#002</div>
+                        <img src="cards/secret.png" alt="Card 002">
+                        <div class="card-info">
+                            <p>🆔 Codename: MALBEC</p>
+                            <p>⚡ Speed: Unknown</p>
+                            <p>💪 Strength: Unknown</p>
+                            <p>📍 Location: Old South Ferry Loop, Manhattan</p>
+                            <p>✨ Special Ability: Unknown</p>
+                        </div>
+                    </div>
+
+                    <!-- BACK -->
+                    <div class="card-back">
+                        <img src="cards/secret.png" alt="Card 002 Back">
+                    </div>
+
+                </div>
             </div>
-        </div>
 
-        <div class="card">
-            <div class="card-id">#003</div>
-            <img src="cards/secret.png" alt="Card 003">
-            <div class="card-info">
-                <p>🆔 Codename: TBD</p>
-                <p>⚡ Speed: Unknown</p>
-                <p>💪 Strength: Unknown</p>
-                <p>📍 Location: Unknown</p>
-                <p>✨ Special Ability: Unknown</p>
+            <div class="card">
+                <div class="card-inner">
+
+                    <!-- FRONT -->
+                    <div class="card-front">
+                        <div class="card-id">#003</div>
+                        <img src="cards/secret.png" alt="Card 003">
+                        <div class="card-info">
+                            <p>🆔 Codename: TBD</p>
+                            <p>⚡ Speed: Unknown</p>
+                            <p>💪 Strength: Unknown</p>
+                            <p>📍 Location: Unknown</p>
+                            <p>✨ Special Ability: Unknown</p>
+                        </div>
+                    </div>
+
+                    <!-- BACK -->
+                    <div class="card-back">
+                        <img src="cards/secret.png" alt="Card 003 Back">
+                    </div>
+
+                </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <a href="index.html" class="feature-btn home-btn">← Back to Home</a>
+        <a href="index.html" class="feature-btn home-btn">← Back to Home</a>
 
-</div>
+    </div>
+
+    <script>
+        document.querySelectorAll('.card').forEach(card => {
+            card.addEventListener('click', () => {
+                card.classList.toggle('flipped');
+            });
+        });
+    </script>
 </body>
+
 </html>
-
-
