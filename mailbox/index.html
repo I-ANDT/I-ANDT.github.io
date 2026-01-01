@@ -109,7 +109,7 @@ const emailContentDiv = document.getElementById("email-content");
 
 function renderEmailList() {
   emailListDiv.innerHTML = "";
-  emails.forEach(email => {
+  emails.slice().reverse().forEach(email => {
     const item = document.createElement("div");
     item.className = "email-item";
     item.onclick = () => openEmail(email);
