@@ -48,6 +48,7 @@
     max-width: 100%;
     margin-top: 10px;
   }
+
 </style>
 </head>
 <body>
@@ -69,7 +70,7 @@ const emails = [
   {
     id: 1,
     sender: "ops@dbc.gov",
-    date: "2045-12-28",
+    date: "2045-12-28 10:15",
     subject: "[CLASSIFIED] New Mutation Report",
     text: `<h3>[CLASSIFIED – LEVEL IV ACCESS]</h3>
 <strong>Anomalous Fauna Registry – Entry #001</strong><br>
@@ -84,13 +85,23 @@ const emails = [
 <strong>Behavioral Notes:</strong> Capable of rapid repositioning, [REDACTED]<br>
 <p><strong>Internal Directive:</strong></p>
 <blockquote>Do not engage during high wind conditions.</blockquote>`,
-    images: ["sketches/chablis.png"],
+    images: ["img/chablis.png"],
     drop: "29-12 18:05:00 UTC || 13:05:00 EST"
   },
-  {
+    {
     id: 2,
+    sender: "worldnews@mashit.com",
+    date: "2046-01-01 14:23",
+    subject: "Weekly News: 01/01/2046",
+    text: `<p><strong>Unidentified Object Spotted</strong></p>
+<p>As Southeast Asia welcomed the New Year, a mysterious object was observed at the exact moment the year changed in the Manila time zone, in the central Pacific Ocean, approximately 1,200 kilometers east of the Mariana Islands.</p>`,
+    images: ["img/abduction.png"],
+    img_captions: ["The sighting was recorded by a team of scientists from the University of Shanghai. Its origin and purpose remain unknown." ]
+  },
+  {
+    id: 3,
     sender: "newsletters@nydaily.com",
-    date: "2046-01-01",
+    date: "2046-01-01 20:15",
     subject: "Missing People",
     text: `<p><strong>Missing People Reported After New Year’s Eve</strong></p>
 <p>Local authorities are investigating a series of <strong>missing-person reports</strong> following New Year’s Eve celebrations in Lower Manhattan.</p>
@@ -129,15 +140,29 @@ function openEmail(email) {
     <p><strong>Date:</strong> ${email.date}</p>
     <hr>
     <div class="email-body">${email.text}</div>`;
-    if (email.drop) emailContentDiv.innerHTML += `<p><strong>Operational Deployment:</strong> ${email.drop}</p>`;
-    emailContentDiv.innerHTML += `<div class="email-images"></div>`;
 
+  if (email.drop) {
+    emailContentDiv.innerHTML += `<p><strong>Operational Deployment:</strong> ${email.drop}</p>`;
+  }
+
+  emailContentDiv.innerHTML += `<div class="email-images"></div>`;
   const imagesDiv = emailContentDiv.querySelector(".email-images");
+
   if (email.images && email.images.length > 0) {
-    email.images.forEach(src => {
+    email.images.forEach((src, i) => {
+      const figure = document.createElement("figure");
       const img = document.createElement("img");
       img.src = src;
-      imagesDiv.appendChild(img);
+      figure.appendChild(img);
+
+      // Check if img_caption is an array and has a caption for this image
+      if (Array.isArray(email.img_captions) && email.img_captions[i]) {
+        const caption = document.createElement("figcaption");
+        caption.innerText = email.img_captions[i];
+        figure.appendChild(caption);
+      }
+
+      imagesDiv.appendChild(figure);
     });
   }
 }
