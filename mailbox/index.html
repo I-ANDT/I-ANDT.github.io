@@ -1,78 +1,84 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Mutation Mailbox</title>
-<link rel="stylesheet" href="../css/style.css">
-<style>
-  /* Layout-specific overrides */
-  body {
-    display: flex;
-    height: 100vh;
-    margin: 0;
-  }
-  #sidebar {
-    width: 30%;
-    overflow-y: auto;
-    padding: 10px;
-  }
-  #content {
-    flex: 1;
-    padding: 20px;
-    overflow-y: auto;
-  }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mutation Mailbox</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    /* Layout-specific overrides */
+    body {
+      display: flex;
+      height: 100vh;
+      margin: 0;
+    }
 
-  /* Keep old email item styling */
-  .email-item {
-    padding: 12px;
-    border-bottom: 1px solid #550055;
-    cursor: pointer;
-    transition: 0.2s;
-  }
-  .email-item:hover {
-    background: rgba(255,0,255,0.2);
-  }
-  .email-subject {
-    font-weight: bold;
-    color: #fff;
-  }
+    #sidebar {
+      width: 30%;
+      overflow-y: auto;
+      padding: 10px;
+    }
 
-  .home-btn {
-    display: inline-block;
-    margin-top: 20px;
-    padding: 10px 15px;
-    text-align: center;
-  }
-  .email-images img {
-    max-width: 100%;
-    margin-top: 10px;
-  }
+    #content {
+      flex: 1;
+      padding: 20px;
+      overflow-y: auto;
+    }
 
-</style>
+    /* Keep old email item styling */
+    .email-item {
+      padding: 12px;
+      border-bottom: 1px solid #550055;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .email-item:hover {
+      background: rgba(255, 0, 255, 0.2);
+    }
+
+    .email-subject {
+      font-weight: bold;
+      color: #fff;
+    }
+
+    .home-btn {
+      display: inline-block;
+      margin-top: 20px;
+      padding: 10px 15px;
+      text-align: center;
+    }
+
+    .email-images img {
+      max-width: 100%;
+      margin-top: 10px;
+    }
+  </style>
 </head>
+
 <body>
 
-<div id="sidebar">
-  <h2>Inbox</h2>
-  <div id="email-list"></div>
-  <a href="../index.html" class="feature-btn home-btn">← Back to Home</a>
-</div>
+  <div id="sidebar">
+    <h2>Inbox</h2>
+    <div id="email-list"></div>
+    <a href="../index.html" class="feature-btn home-btn">← Back to Home</a>
+  </div>
 
-<div id="content">
-  <h2>Mutation Containment Program</h2>
-  <div id="email-content"></div>
-</div>
+  <div id="content">
+    <h2>Mutation Containment Program</h2>
+    <div id="email-content"></div>
+  </div>
 
-<script>
-// Example mail data
-const emails = [
-  {
-    id: 1,
-    sender: "ops@dbc.gov",
-    date: "2045-12-28 10:15",
-    subject: "[CLASSIFIED] New Mutation Report",
-    text: `<h3>[CLASSIFIED – LEVEL IV ACCESS]</h3>
+  <script>
+    // Example mail data
+    const emails = [
+      {
+        id: 1,
+        sender: "ops@dbc.gov",
+        date: "2045-12-28 10:15",
+        subject: "[CLASSIFIED] New Mutation Report",
+        text: `<h3>[CLASSIFIED – LEVEL IV ACCESS]</h3>
 <strong>Anomalous Fauna Registry – Entry #001</strong><br>
 <strong>Designation:</strong> CHABLIS<br>
 <strong>Known Alias:</strong> “The Ninefold Gale”<br>
@@ -85,15 +91,15 @@ const emails = [
 <strong>Behavioral Notes:</strong> Capable of rapid repositioning, [REDACTED]<br>
 <p><strong>Internal Directive:</strong></p>
 <blockquote>Do not engage during high wind conditions.</blockquote>`,
-    images: ["img/chablis.png"],
-    drop: "29-12 18:05:00 UTC || 13:05:00 EST"
-  },
-    {
-    id: 2,
-    sender: "worldnews@mashit.com",
-    date: "2046-01-01 14:23",
-    subject: "Weekly News: 01/01/2046",
-    text: `<p>1. Local authorities are investigating a series of missing-person reports following New Year’s Eve celebrations in Lower Manhattan.</p>
+        images: ["img/chablis.png"],
+        drop: "29-12 18:05:00 UTC || 13:05:00 EST"
+      },
+      {
+        id: 2,
+        sender: "worldnews@mashit.com",
+        date: "2046-01-01 14:23",
+        subject: "Weekly News: 01/01/2046",
+        text: `<p>1. Local authorities are investigating a series of missing-person reports following New Year’s Eve celebrations in Lower Manhattan.</p>
 <p>Several individuals were last seen returning home late at night near the <strong>southern tip of Manhattan</strong>, in the vicinity of waterfront transit infrastructure linked to a long-decommissioned subway route.</p>
 <p>According to officials:</p>
 <ul>
@@ -102,65 +108,86 @@ const emails = [
 </ul>
 <p>The investigation remains ongoing.</p><br>
 <p>2. As Southeast Asia welcomed 2046, a mysterious object was observed at the exact moment the year changed in the Manila time zone, in the central Pacific Ocean - approximately 1,200 kilometers east of the Mariana Islands.</p>`,
-    images: ["img/abduction.png"],
-    img_captions: ["The sighting was recorded by a team of scientists from the University of Shanghai. Its origin and purpose remain unknown." ]
-  }
-];
+        images: ["img/abduction.png"],
+        img_captions: ["The sighting was recorded by a team of scientists from the University of Shanghai. Its origin and purpose remain unknown."]
+      },
+      {
+        id: 3,
+        sender: "ops@dbc.gov",
+        date: "2046-01-07 22:25",
+        subject: "[CLASSIFIED] New Mutation Report",
+        text: `<strong>Designation:</strong> MALBEC<br>
+<strong>Known Alias:</strong> “The Rat King”<br>
+<strong>Species Origin:</strong> <em>Rattus norvegicus</em><br>
+<strong>Class:</strong> Tenebrae<br><br>
+<strong>Last Recorded Location:</strong> Abandoned South Ferry Loop, Manhattan, New York City<br>
+<strong>Mutation Index:</strong> ☠️☠️☠️☠️☠️☠️☠️<br>
+<strong>Threat Level:</strong> High<br><br>
+<strong>Physical Description:</strong><br>
+Amalgamated rodent entity composed of several cranial structures sharing a single intertwined body mass. Skeletal fusion observed. Movement patterns suggest collective neural coordination.<br><br>
+<strong>Behavioral Notes:</strong><br>
+Exhibits heightened nocturnal activity. Demonstrates coordinated control over a large population of subordinate organisms. Capable of inducing localized power failures while maintaining full perception in near-total darkness.<br><br>
+<p><strong>Internal Directive:</strong></p> <blockquote> Do not pursue into dark and narrow spaces. </blockquote>`,
+        images: [],
+        drop: "TBA"
+      },
+    ];
 
-const emailListDiv = document.getElementById("email-list");
-const emailContentDiv = document.getElementById("email-content");
+    const emailListDiv = document.getElementById("email-list");
+    const emailContentDiv = document.getElementById("email-content");
 
-function renderEmailList() {
-  emailListDiv.innerHTML = "";
-  emails.slice().reverse().forEach(email => {
-    const item = document.createElement("div");
-    item.className = "email-item";
-    item.onclick = () => openEmail(email);
+    function renderEmailList() {
+      emailListDiv.innerHTML = "";
+      emails.slice().reverse().forEach(email => {
+        const item = document.createElement("div");
+        item.className = "email-item";
+        item.onclick = () => openEmail(email);
 
-    const subjectDiv = document.createElement("div");
-    subjectDiv.className = "email-subject";
-    subjectDiv.innerHTML = email.subject;
+        const subjectDiv = document.createElement("div");
+        subjectDiv.className = "email-subject";
+        subjectDiv.innerHTML = email.subject;
 
-    item.appendChild(subjectDiv);
-    emailListDiv.appendChild(item);
-  });
-}
+        item.appendChild(subjectDiv);
+        emailListDiv.appendChild(item);
+      });
+    }
 
-function openEmail(email) {
-  emailContentDiv.innerHTML = `<h3>${email.subject}</h3>
+    function openEmail(email) {
+      emailContentDiv.innerHTML = `<h3>${email.subject}</h3>
     <p><strong>From:</strong> ${email.sender}</p>
     <p><strong>Date:</strong> ${email.date}</p>
     <hr>
     <div class="email-body">${email.text}</div>`;
 
-  if (email.drop) {
-    emailContentDiv.innerHTML += `<p><strong>Operational Deployment:</strong> ${email.drop}</p>`;
-  }
-
-  emailContentDiv.innerHTML += `<div class="email-images"></div>`;
-  const imagesDiv = emailContentDiv.querySelector(".email-images");
-
-  if (email.images && email.images.length > 0) {
-    email.images.forEach((src, i) => {
-      const figure = document.createElement("figure");
-      const img = document.createElement("img");
-      img.src = src;
-      figure.appendChild(img);
-
-      // Check if img_caption is an array and has a caption for this image
-      if (Array.isArray(email.img_captions) && email.img_captions[i]) {
-        const caption = document.createElement("figcaption");
-        caption.innerText = email.img_captions[i];
-        figure.appendChild(caption);
+      if (email.drop) {
+        emailContentDiv.innerHTML += `<p><strong>Operational Deployment:</strong> ${email.drop}</p>`;
       }
 
-      imagesDiv.appendChild(figure);
-    });
-  }
-}
+      emailContentDiv.innerHTML += `<div class="email-images"></div>`;
+      const imagesDiv = emailContentDiv.querySelector(".email-images");
 
-renderEmailList();
-</script>
+      if (email.images && email.images.length > 0) {
+        email.images.forEach((src, i) => {
+          const figure = document.createElement("figure");
+          const img = document.createElement("img");
+          img.src = src;
+          figure.appendChild(img);
+
+          // Check if img_caption is an array and has a caption for this image
+          if (Array.isArray(email.img_captions) && email.img_captions[i]) {
+            const caption = document.createElement("figcaption");
+            caption.innerText = email.img_captions[i];
+            figure.appendChild(caption);
+          }
+
+          imagesDiv.appendChild(figure);
+        });
+      }
+    }
+
+    renderEmailList();
+  </script>
 
 </body>
+
 </html>
