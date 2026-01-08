@@ -1,7 +1,19 @@
 const canvas = document.getElementById("compositeCanvas");
 const ctx = canvas.getContext("2d");
 
+// Mobile-friendly canvas setup
+function setupCanvas() {
+    const scale = window.devicePixelRatio || 1;
+    canvas.width = 800 * scale;
+    canvas.height = 600 * scale;
+    canvas.style.width = "800px";   // CSS size
+    canvas.style.height = "600px";  // CSS size
+    ctx.scale(scale, scale);
+}
+
 async function drawComposite(userData) {
+    setupCanvas(); 
+    
     const background = new Image();
     background.src = "assets/training_center.png"; // your custom bg
 
