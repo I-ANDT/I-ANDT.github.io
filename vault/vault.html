@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vault</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <header>
+        <h1>🔐 Secure Vault Access</h1>
+        <p>Connect your wallet to verify card ownership and unlock exclusive content.</p>
+    </header>
+    <button id="connectBtn">Connect Wallet</button>
+
+
+    <div id="status"></div>
+
+    <div id="exclusive-content" style="display:none;">
+        <h2>🧬 Identity Verified</h2>
+        <p>Welcome, Agent. Your credentials have been authenticated. Exclusive intel will be revealed shortly</p>
+        <!-- your secret lore, images, downloads, etc -->
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/ethers@6.10.0/dist/ethers.umd.min.js"></script>
+    <script src="wallet.js" defer></script>
+</body>
+
+</html>
