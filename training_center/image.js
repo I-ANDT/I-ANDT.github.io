@@ -33,7 +33,10 @@ async function drawComposite(userData) {
 
     // draw background
     await new Promise(res => background.onload = res);
-    ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
+    const scale = window.devicePixelRatio || 1;
+    const bg_width = canvas.width / scale;   // logical width
+    const bg_height = canvas.height / scale; // logical height
+    ctx.drawImage(background, 0, 0, bg_width, bg_height);
 
     // draw mutants
     const mutantPaths = ["assets/chablis.png"];
@@ -88,5 +91,3 @@ document.getElementById("downloadBtn").onclick = () => {
     link.href = canvas.toDataURL();
     link.click();
 };
-
-init();
