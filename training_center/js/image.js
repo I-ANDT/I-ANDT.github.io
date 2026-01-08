@@ -1,21 +1,10 @@
 const canvas = document.getElementById("compositeCanvas");
 const ctx = canvas.getContext("2d");
 
-// Mobile-friendly canvas setup
-function setupCanvas() {
-    const scale = window.devicePixelRatio || 1;
-    canvas.width = 800 * scale;
-    canvas.height = 600 * scale;
-    canvas.style.width = "800px";   // CSS size
-    canvas.style.height = "600px";  // CSS size
-    ctx.scale(scale, scale);
-}
-
 async function drawComposite(userData) {
-    setupCanvas(); 
     
     const background = new Image();
-    background.src = "assets/training_center.png"; // your custom bg
+    background.src = "./assets/training_center.png"; // your custom bg
 
     // filter out the background asset
     const layers = userData.assets.filter(asset => asset.name !== "background");
@@ -33,38 +22,30 @@ async function drawComposite(userData) {
 
     // draw background
     await new Promise(res => background.onload = res);
-    const scale = window.devicePixelRatio || 1;
-    const bg_width = canvas.width / scale;   // logical width
-    const bg_height = canvas.height / scale; // logical height
-    ctx.drawImage(background, 0, 0, bg_width, bg_height);
+    ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
 
     // draw mutants
-    const mutantPaths = ["assets/chablis.png"];
+    const mutantPaths = ["../cards/chablis.png", "../cards/malbec.png"];
     const mutants = await Promise.all(mutantPaths.map(path => {
         return new Promise((resolve, reject) => {
             const img = new Image();
             img.src = path; // remove crossOrigin for local files
             img.onload = () => resolve(img);
-            img.onerror = (e) => reject(e);
+            img.onerror = () => reject(new Error(`Failed to load image: ${path}`));
         });
     }));
     mutants.forEach(img => {
-        let x;
-        do {
-            x = Math.random() * 600; // full canvas width
-        } while (x >= 200 && x <= 400); // retry if inside forbidden range
-
-        const y = 360;   // fixed y
-        const width = 95;
-        const height = 150;
-
+        const width = 45;
+        const height  = 75;
+        const x = Math.random() * (canvas.width - width - 50) + 50;
+        const y = canvas.height - height - 45;
         ctx.drawImage(img, x, y, width, height);
     });
 
     // draw each asset on top
-    const avatarWidth = 190;
-    const avatarHeight = 300;
-    const x = canvas.width / 2 - avatarWidth / 2; // center
+    const avatarWidth = 95;
+    const avatarHeight = 150;
+    const x = canvas.width / 10; // center
     const y = canvas.height - avatarHeight - 50;  // near bottom
 
     images.forEach(img => {
