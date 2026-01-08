@@ -1,5 +1,19 @@
+const LOGICAL_WIDTH = 800;
+const LOGICAL_HEIGHT = 600;
+
 const canvas = document.getElementById("compositeCanvas");
 const ctx = canvas.getContext("2d");
+
+const dpr = Math.min(window.devicePixelRatio || 1, 2); // cap at 2 for safety
+
+canvas.width = LOGICAL_WIDTH * dpr;
+canvas.height = LOGICAL_HEIGHT * dpr;
+
+canvas.style.width = `${LOGICAL_WIDTH}px`;
+canvas.style.height = `${LOGICAL_HEIGHT}px`;
+
+ctx.scale(dpr, dpr);
+
 
 async function drawComposite(userData) {
     
@@ -35,18 +49,18 @@ async function drawComposite(userData) {
         });
     }));
     mutants.forEach(img => {
-        const width = 45;
-        const height  = 75;
-        const x = Math.random() * (canvas.width - width - 50) + 50;
-        const y = canvas.height - height - 45;
+        const width = 90;
+        const height  = 150;
+        const x = Math.random() * (canvas.width - width) /  dpr;
+        const y = canvas.height / dpr - height - 45;
         ctx.drawImage(img, x, y, width, height);
     });
 
     // draw each asset on top
-    const avatarWidth = 95;
-    const avatarHeight = 150;
-    const x = canvas.width / 10; // center
-    const y = canvas.height - avatarHeight - 50;  // near bottom
+    const avatarWidth = 180;
+    const avatarHeight = 300;
+    const x = (canvas.width / 6 - 100) / dpr;
+    const y = canvas.height / dpr - avatarHeight - 100;  // near bottom
 
     images.forEach(img => {
         ctx.drawImage(img, x, y, avatarWidth, avatarHeight);
