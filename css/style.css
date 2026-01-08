@@ -125,3 +125,45 @@ header {
     margin: 30px auto 0;    /* center horizontally, add top margin */
     text-align: center;
 }
+
+/* Canvas styling */
+#compositeCanvas {
+    display: block;
+    margin: 30px auto;
+    border: 3px solid #ff00ff;
+    border-radius: 12px;
+    box-shadow: 
+        0 0 20px #ff00ff,
+        0 0 40px rgba(0, 255, 255, 0.6),
+        inset 0 0 10px #00ffff;
+    background-color: #111;
+}
+
+/* Download button styling */
+#downloadBtn {
+    display: block;
+    margin: 20px auto;
+    padding: 12px 28px;
+    font-family: 'Monospace', sans-serif;
+    font-size: 1rem;
+    letter-spacing: 1px;
+    color: #0b0b12;
+    background: linear-gradient(135deg, #ff00ff, #00ffff);
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    box-shadow:
+        0 0 10px #ff00ff,
+        0 0 20px #00ffff,
+        0 0 40px rgba(255, 0, 255, 0.4);
+    transition: all 0.25s ease;
+}
+
+/* Hover glow effect */
+#downloadBtn:hover {
+    transform: scale(1.05);
+    box-shadow:
+        0 0 15px #ff00ff,
+        0 0 30px #00ffff,
+        0 0 50px rgba(255, 0, 255, 0.7);
+}

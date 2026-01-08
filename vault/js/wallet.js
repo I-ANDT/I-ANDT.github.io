@@ -1,3 +1,4 @@
+
 const CONTRACT_ADDRESS = "0x6d74e823E3cFB94A4a395b74B1E7B0F5Ca5596A3"; // Polygon NFT contract
 const DESIRED_NFT_NAMES = ["Mutant", "i&t"]; // Only this NFT collection can unlock
 const CONTRACT_ABI = [
@@ -21,6 +22,8 @@ connectBtn.onclick = async () => {
     await provider.send("eth_requestAccounts", []);
     const signer = await provider.getSigner();
     const address = await signer.getAddress();
+    localStorage.setItem("walletAddress", address);
+
 
     const network = await provider.getNetwork();
     if (network.chainId !== 137n) {
