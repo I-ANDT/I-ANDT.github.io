@@ -14,6 +14,10 @@
     0 0 10px #ff00ff,
     0 0 20px rgba(0, 255, 255, 0.6);
   transition: all 0.25s ease;
+      display: block;
+    width: 200px;           /* fixed width */
+    margin: 30px auto 0;    /* center horizontally, add top margin */
+    text-align: center;
 }
 
 #connectBtn:hover {

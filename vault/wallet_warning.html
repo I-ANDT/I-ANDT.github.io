@@ -1,0 +1,86 @@
+<!-- Cyberpunk Modal HTML -->
+<div id="wallet-warning" class="modal">
+    <div class="modal-content">
+        <h2>⚠️ Security Warning</h2>
+        <p>
+            This site will ask to connect to your wallet.<br>
+            BUT it will <strong>NEVER</strong> ask you to sign to your wallet or provide your seed phrases.<br>
+            If any suspicious requests appear, close the site immediately.
+        </p>
+        <button id="proceed-btn">Proceed</button>
+    </div>
+</div>
+
+<style>
+    /* Modal Overlay */
+    .modal {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.95);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 9999;
+    }
+
+    /* Modal Box */
+    .modal-content {
+        background: #111;
+        border: 2px solid #ff00ff;
+        padding: 30px 40px;
+        border-radius: 12px;
+        text-align: center;
+        max-width: 500px;
+        color: #00ffff;
+        font-family: 'Orbitron', monospace;
+        box-shadow: 0 0 15px #ff00ff, 0 0 25px #00ffff;
+    }
+
+    .modal-content h2 {
+        margin-bottom: 20px;
+        text-shadow: 0 0 8px #ff00ff, 0 0 15px #00ffff;
+    }
+
+    .modal-content p {
+        font-size: 1rem;
+        line-height: 1.5;
+        margin-bottom: 25px;
+    }
+
+    #proceed-btn {
+        background: linear-gradient(135deg, #ff00ff, #00ffff);
+        border: none;
+        color: #0b0b12;
+        padding: 12px 24px;
+        font-size: 1rem;
+        font-family: 'Orbitron', monospace;
+        letter-spacing: 1px;
+        border-radius: 6px;
+        cursor: pointer;
+        box-shadow: 0 0 10px #ff00ff, 0 0 20px #00ffff;
+        transition: all 0.25s ease;
+    }
+
+    #proceed-btn:hover {
+        transform: scale(1.05);
+        box-shadow: 0 0 20px #ff00ff, 0 0 25px #00ffff;
+    }
+</style>
+
+<script>
+    // Show modal on page load
+    window.addEventListener('load', () => {
+        const modal = document.getElementById('wallet-warning');
+        const proceedBtn = document.getElementById('proceed-btn');
+
+        modal.style.display = 'flex';
+
+        proceedBtn.addEventListener('click', () => {
+            // redirect to wallet page
+            window.location.href = 'vault.html';
+        });
+    });
+</script>

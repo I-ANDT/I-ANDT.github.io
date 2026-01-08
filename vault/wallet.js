@@ -1,8 +1,8 @@
-const ALLOWED_CONTRACTS = [
-  "0xABC123...DEF", // CHABLIS
-].map(addr => addr.toLowerCase());
-const ERC721_ABI = [
-  "function balanceOf(address owner) view returns (uint256)"
+const CONTRACT_ADDRESS = "0x6d74e823E3cFB94A4a395b74B1E7B0F5Ca5596A3"; // Polygon NFT contract
+const DESIRED_NFT_NAMES = ["Mutant", "i&t"]; // Only this NFT collection can unlock
+const CONTRACT_ABI = [
+  "function balanceOf(address owner) view returns (uint256)",
+  "function name() view returns (string)"
 ];
 
 const connectBtn = document.getElementById("connectBtn");
@@ -16,21 +16,36 @@ connectBtn.onclick = async () => {
   }
 
   try {
-    provider = new ethers.providers.Web3Provider(window.ethereum);
+    // 1️⃣ Connect wallet (SAFE)
+    const provider = new ethers.BrowserProvider(window.ethereum);
     await provider.send("eth_requestAccounts", []);
-    signer = provider.getSigner();
+    const signer = await provider.getSigner();
+    const address = await signer.getAddress();
 
-    const userAddress = await signer.getAddress();
-    statusDiv.innerText = "🔍 Scanning wallet…";
+    const network = await provider.getNetwork();
+    if (network.chainId !== 137n) {
+      statusDiv.innerText = "⚠️ Please switch to Polygon network";
+      return;
+    }
 
-    const hasAccess = await checkNFTAccess(userAddress);
+    statusDiv.innerText = "🔎 Checking access...";
 
-    if (hasAccess) {
-      statusDiv.innerText = "✅ Access Granted";
+    // 2️⃣ Read NFT balance (READ-ONLY)
+    const contract = new ethers.Contract(
+      CONTRACT_ADDRESS,
+      CONTRACT_ABI,
+      provider
+    );
+
+    const balance = await contract.balanceOf(address);
+
+    // 3️⃣ Gate logic
+    if (balance > 0n) {
+      statusDiv.innerText = "✅ Access granted";
       contentDiv.style.display = "block";
       connectBtn.style.display = "none";
     } else {
-      statusDiv.innerText = "❌ Access Denied: No mutant cards found";
+      statusDiv.innerText = "⛔ You do not own any Mutant cards";
     }
 
   } catch (err) {
@@ -38,24 +53,3 @@ connectBtn.onclick = async () => {
     statusDiv.innerText = "⚠️ Wallet connection failed";
   }
 };
-
-async function checkNFTAccess(userAddress) {
-  for (const contractAddress of ALLOWED_CONTRACTS) {
-    try {
-      const contract = new ethers.Contract(
-        contractAddress,
-        ERC721_ABI,
-        provider
-      );
-
-      const balance = await contract.balanceOf(userAddress);
-
-      if (balance.gt(0)) {
-        return true; // owns at least 1 NFT
-      }
-    } catch (e) {
-      console.warn("Contract check failed:", contractAddress);
-    }
-  }
-  return false;
-}
