@@ -7,7 +7,7 @@
   <title>Mutation Mailbox</title>
   <link rel="stylesheet" href="../css/style.css">
   <style>
-    /* Layout-specific overrides */
+    /* Default: desktop layout */
     body {
       display: flex;
       height: 100vh;
@@ -26,7 +26,6 @@
       overflow-y: auto;
     }
 
-    /* Keep old email item styling */
     .email-item {
       padding: 12px;
       border-bottom: 1px solid #550055;
@@ -43,16 +42,34 @@
       color: #fff;
     }
 
-    .home-btn {
-      display: inline-block;
-      margin-top: 20px;
-      padding: 10px 15px;
-      text-align: center;
-    }
+    /* Mobile-friendly adjustments */
+    @media (max-width: 768px) {
+      body {
+        flex-direction: column;
+        /* stack sidebar above content */
+        height: auto;
+      }
 
-    .email-images img {
-      max-width: 100%;
-      margin-top: 10px;
+      #sidebar {
+        width: 100%;
+        height: auto;
+      }
+
+      #content {
+        width: 100%;
+        padding: 10px;
+      }
+
+      .email-item {
+        font-size: 0.9rem;
+        /* make text smaller if needed */
+      }
+
+      .home-btn {
+        width: 100%;
+        /* button stretches across screen */
+        text-align: center;
+      }
     }
   </style>
 </head>
@@ -62,7 +79,7 @@
   <div id="sidebar">
     <h2>Inbox</h2>
     <div id="email-list"></div>
-    <a href="../index.html" class="feature-btn home-btn">← Back to Home</a>
+    <a href="../index.html" class="feature-btn home-btn">← Home</a>
   </div>
 
   <div id="content">
