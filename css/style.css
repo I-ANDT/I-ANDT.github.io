@@ -24,6 +24,9 @@ header {
     justify-content: center;
     gap: 30px;
     margin-top: 30px;
+
+    /* allow wrapping on small screens */
+    flex-wrap: wrap;
 }
 
 .feature-btn {
