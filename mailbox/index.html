@@ -188,6 +188,8 @@ Exhibits heightened nocturnal activity. Demonstrates coordinated control over a 
           const figure = document.createElement("figure");
           const img = document.createElement("img");
           img.src = src;
+          img.style.width = "20%";       // 1/3 of the container width
+          img.style.height = "auto";     // maintain aspect ratio
           figure.appendChild(img);
 
           // Check if img_caption is an array and has a caption for this image
