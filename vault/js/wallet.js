@@ -33,7 +33,7 @@ async function fetchNFTs(address) {
   return data.ownedNfts || [];
 }
 
-window.addEventListener("load", async () => {
+/* window.addEventListener("load", async () => {
   if (!window.ethereum) return;
 
   const provider = new ethers.BrowserProvider(window.ethereum);
@@ -47,7 +47,7 @@ window.addEventListener("load", async () => {
   localStorage.setItem("walletAddress", address);
 
   await verifyAccess(provider, address);
-});
+}); */
 
 async function verifyAccess(provider, address) {
   const network = await provider.getNetwork();
@@ -67,7 +67,7 @@ async function verifyAccess(provider, address) {
   const balance = await contract.balanceOf(address);
 
   if (balance === 0n) {
-    statusDiv.innerText = "⛔ You do not own any Mutant cards";
+    statusDiv.innerText = "⛔ You do not own any Mashi Mutant cards";
     return;
   }
 

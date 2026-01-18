@@ -119,6 +119,8 @@ async function drawProfileCard(userData) {
                 rankColor = "#00FF88"; // Bright Green for mid-level
             } else if (count >= 1) {
                 rank = "LEVEL_1 [TRAINEE]";
+            } else {
+                rank = "LEVEL_0 [RECRUIT]";
             }
         }
         drawDataLine("CLEARANCE LEVEL", rank, textX, startY + (lineHeight * 4), rankColor);
