@@ -1,9 +1,8 @@
-const canvas = document.getElementById("profileCanvas");
-const ctx = canvas.getContext("2d");
+// profile.js
+async function drawProfileCard(userData) {
 
-
-async function drawComposite(userData) {
-
+    const canvas = document.getElementById("profileCanvas");
+    const ctx = canvas.getContext("2d");
     const background = new Image();
     background.src = "./card.png"; // your custom bg
 
@@ -81,17 +80,7 @@ async function drawComposite(userData) {
     ctx.fillText("Department of Biohazard Control", canvas.width / 3, canvas.height - 70);
 }
 
-// Example usage:
-async function fetchAndDraw(address) {
-    const apiUrl = `https://avatar-artists-guild.web.app/api/mashers/latest?wallet=${address}`;
-    const res = await fetch(apiUrl);
-    const data = await res.json();
-    drawComposite(data);
-}
-
-// Example: call after wallet connection
-let address = localStorage.getItem("walletAddress");
-fetchAndDraw(address);
+window.drawProfileCard = drawProfileCard;
 
 document.getElementById("downloadProfileBtn").onclick = () => {
     const link = document.createElement("a");

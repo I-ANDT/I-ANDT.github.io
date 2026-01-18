@@ -10,6 +10,21 @@ const connectBtn = document.getElementById("connectBtn");
 const statusDiv = document.getElementById("status");
 const contentDiv = document.getElementById("exclusive-content");
 
+async function initProfileCard() {
+    const address = localStorage.getItem("walletAddress");
+    if (!address) return; // no wallet connected yet
+
+    try {
+        // Fetch NFT info first (optional, you already do it in verifyAccess)
+        const profileData = await fetch(`https://avatar-artists-guild.web.app/api/mashers/latest?wallet=${address}`)
+            .then(r => r.json());
+
+        // Draw the card
+        drawProfileCard(profileData);
+    } catch (err) {
+        console.error("Failed to fetch avatar data:", err);
+    }
+}
 
 async function fetchNFTs(address) {
   const url = `${ALCHEMY_API}/getNFTs/?owner=${address}&contractAddresses[]=${CONTRACT_ADDRESS}`;
@@ -85,6 +100,8 @@ async function verifyAccess(provider, address) {
     statusDiv.innerText = `✅ Access granted (${matchedNFTs.length} card${matchedNFTs.length > 1 ? "s" : ""})`;
     contentDiv.style.display = "block";
     connectBtn.style.display = "none";
+    await initProfileCard();
+
   }
   else {
     statusDiv.innerText = "⛔ You do not own any Mutant cards";
