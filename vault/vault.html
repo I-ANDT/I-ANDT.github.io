@@ -6,6 +6,37 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Vault</title>
     <link rel="stylesheet" href="../css/style.css">
+    <style>
+        #profileCanvas {
+            display: block;
+            margin: 20px auto;
+            width: 100%;
+            /* scale to container width */
+            max-width: 400px;
+            /* don't grow bigger than actual resolution */
+            height: auto;
+            /* maintain aspect ratio */
+            border: 3px solid #ff00ff;
+            border-radius: 12px;
+            box-shadow: 0 0 20px #ff00ff, 0 0 40px rgba(0, 255, 255, 0.6), inset 0 0 10px #00ffff;
+            background-color: #111;
+        }
+
+        #downloadProfileBtn {
+            display: block;
+            margin: 10px auto;
+            padding: 10px 20px;
+            background: #000;
+            color: #00ffff;
+            border: 2px solid #ff00ff;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        #downloadProfileBtn:hover {
+            background: #1a001a;
+        }
+    </style>
 </head>
 
 <body>
@@ -25,12 +56,16 @@
         <div class="vault-links">
             <!--             <a href="../training_center/index.html" class="feature-btn">Training Center</a>-->
         </div>
+        <canvas id="profileCanvas" width="736" height="552"></canvas>
+        <button id="downloadProfileBtn">Download Agent Card</button>
     </div>
 
 
     <a href="../index.html" class="feature-btn home-btn">← Back to Home</a>
 
     <script src="https://cdn.jsdelivr.net/npm/ethers@6.10.0/dist/ethers.umd.min.js"></script>
+    <script src="../config/config.js"></script>
     <script src="js/wallet.js" defer></script>
+    <script src="js/profile.js" defer></script>
 
 </html>
