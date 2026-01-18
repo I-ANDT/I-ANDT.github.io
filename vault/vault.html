@@ -7,7 +7,8 @@
     <title>Vault</title>
     <link rel="stylesheet" href="../css/style.css">
     <style>
-        #profileCanvas {
+        #profileCanvas,
+        #finalAgentCard {
             display: block;
             margin: 20px auto;
             width: 100%;
@@ -20,6 +21,11 @@
             border-radius: 12px;
             box-shadow: 0 0 20px #ff00ff, 0 0 40px rgba(0, 255, 255, 0.6), inset 0 0 10px #00ffff;
             background-color: #111;
+        }
+
+        /* Hide the canvas once the image is ready */
+        #profileCanvas {
+            display: none;
         }
 
         #downloadProfileBtn {
@@ -35,6 +41,11 @@
 
         #downloadProfileBtn:hover {
             background: #1a001a;
+        }
+
+        #finalAgentCard:active {
+            filter: brightness(1.5) contrast(1.2);
+            border-color: #FF00FF;
         }
     </style>
 </head>
@@ -56,8 +67,8 @@
         <div class="vault-links">
             <!--             <a href="../training_center/index.html" class="feature-btn">Training Center</a>-->
         </div>
-        <canvas id="profileCanvas" width="736" height="552"></canvas>
-        <button id="downloadProfileBtn">Download Agent Card</button>
+        <canvas id="profileCanvas" width="736" height="552" style="display:none;"></canvas>
+        <img id="finalAgentCard" alt="Agent Card" />
     </div>
 
 

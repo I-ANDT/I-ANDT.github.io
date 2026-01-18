@@ -5,7 +5,8 @@
 
 async function drawProfileCard(userData) {
     const canvas = document.getElementById("profileCanvas");
-    if (!canvas) {
+    const finalImg = document.getElementById("finalAgentCard");
+    if (!canvas || !finalImg) {
         console.error("Canvas element not found");
         return;
     }
@@ -133,6 +134,11 @@ async function drawProfileCard(userData) {
 
         console.log("✅ Card rendered successfully.");
 
+        // 4. THE SWITCH: Canvas -> Image tag
+        // This is what makes it savable in MetaMask!
+        const dataURL = canvas.toDataURL("image/png");
+        finalImg.src = dataURL;
+
     } catch (error) {
         console.error("❌ Rendering error:", error);
     }
@@ -141,7 +147,7 @@ async function drawProfileCard(userData) {
 // Global scope export
 window.drawProfileCard = drawProfileCard;
 
-// Handle Download Button for PC and Mobile
+/* // Handle Download Button for PC and Mobile
 window.addEventListener("DOMContentLoaded", () => {
     const downloadBtn = document.getElementById("downloadProfileBtn");
 
@@ -175,4 +181,4 @@ window.addEventListener("DOMContentLoaded", () => {
             }, "image/png");
         };
     }
-});
+}); */
