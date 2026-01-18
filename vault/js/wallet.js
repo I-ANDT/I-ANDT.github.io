@@ -100,7 +100,7 @@ async function verifyAccess(provider, address) {
     statusDiv.innerText = `✅ Access granted (${matchedNFTs.length} card${matchedNFTs.length > 1 ? "s" : ""})`;
     contentDiv.style.display = "block";
     connectBtn.style.display = "none";
-    await initProfileCard();
+    initProfileCard();
 
   }
   else {
