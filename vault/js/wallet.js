@@ -33,7 +33,7 @@ async function fetchNFTs(address) {
   return data.ownedNfts || [];
 }
 
-/* window.addEventListener("load", async () => {
+window.addEventListener("load", async () => {
   if (!window.ethereum) return;
 
   const provider = new ethers.BrowserProvider(window.ethereum);
@@ -47,7 +47,7 @@ async function fetchNFTs(address) {
   localStorage.setItem("walletAddress", address);
 
   await verifyAccess(provider, address);
-}); */
+});
 
 async function verifyAccess(provider, address) {
   const network = await provider.getNetwork();

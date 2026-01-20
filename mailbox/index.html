@@ -148,6 +148,16 @@ Exhibits heightened nocturnal activity. Demonstrates coordinated control over a 
         images: [],
         drop: "09-01 21:05:00 UTC || 15:05:00 EST"
       },
+      {
+        id: 4,
+        sender: "worldnews@mashit.com",
+        date: "2046-01-20 16:51",
+        subject: "Weekly News: 20/01/2046",
+        text: `<p>Footage recovered from a mobile phone has surfaced and is believed to be linked to the New Year’s Eve incident in Lower Manhattan. According to early reports, the video appears to show evidence of an alleged New Year’s Eve gathering taking place inside underground tunnels shortly before several individuals were reported missing.</p>`,
+        images: ["img/party_rat.png"],
+        img_captions: ["The phone was found by a local near the shoreline close to the Statue of Liberty which went viral on <a href=\"https://www.instagram.com/reel/DTVKwr3jBia/?igsh=bXF4bmFqNWtvMTBx\" target=\"_blank\" rel=\"noopener noreferrer\"> social media</a>."]
+      }
+
     ];
 
     const emailListDiv = document.getElementById("email-list");
@@ -195,7 +205,7 @@ Exhibits heightened nocturnal activity. Demonstrates coordinated control over a 
           // Check if img_caption is an array and has a caption for this image
           if (Array.isArray(email.img_captions) && email.img_captions[i]) {
             const caption = document.createElement("figcaption");
-            caption.innerText = email.img_captions[i];
+            caption.innerHTML = email.img_captions[i]; // use innerHTML instead of innerText
             figure.appendChild(caption);
           }
 
