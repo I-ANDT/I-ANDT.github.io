@@ -263,3 +263,38 @@ header {
     transform: translateY(0);
   }
 }
+
+/* === SEASONAL CONTENT === */
+.seasonal_content {
+  margin-top: 30px;
+  padding: 20px;
+  border: 2px solid #00ffff;
+  border-radius: 8px;
+  background: rgba(20, 20, 30, 0.85);
+  box-shadow: 
+    0 0 15px #00ffff,
+    inset 0 0 20px rgba(0, 255, 255, 0.3);
+}
+.seasonal_content p {
+  color: #e6e6ff;
+  font-family: monospace;
+}
+.seasonal_content a.seasonal-link {
+  color: #00ffff;
+  text-decoration: none;
+  font-weight: bold;
+  text-shadow: 0 0 6px #00ffff;
+}
+.seasonal_content a.seasonal-link:hover {
+  text-decoration: underline;
+}
+.seasonal_content img {
+  display: block;
+  margin: 15px auto 0;
+  max-width: 200px;
+  border: 2px solid #00ffff;
+  border-radius: 8px;
+  box-shadow: 
+    0 0 10px #00ffff,
+    inset 0 0 15px rgba(0, 255, 255, 0.3);
+}

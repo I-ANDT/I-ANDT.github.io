@@ -104,20 +104,35 @@ async function drawProfileCard(userData) {
         let rankColor = "#00FFEE";
 
         if (dbcAccess) {
-            const count = dbcAccess.count;
-            if (count >= 10) {
-                rank = "LEVEL_5 [ELITE_OPERATIVE]";
-                rankColor = "#FFAA00"; // Goldish for elite
-            } else if (count >= 6) {
-                rank = "LEVEL_4 [SENIOR_AGENT]";
+            const level = dbcAccess.levelScore || 0; // Use levelScore for rank calculation
+            if (level >= 50) {
+                rank = "LEVEL_10 [OVERSEER]";
+                rankColor = "#FF0000"; // Red for highest rank
+            } else if (level >= 40) {
+                rank = "LEVEL_9 [MASTER_STRATEGIST]";
+                rankColor = "#FF5500"; // Orange-Red for high rank
+            } else if (level >= 30) {
+                rank = "LEVEL_8 [COMMANDER]";
+                rankColor = "#FFAA00"; // Goldish for commander rank
+            } else if (level >= 22) {
+                rank = "LEVEL_7 [TACTICAL_LEAD]";
+                rankColor = "#7000FF"; // Purple for tactical lead
+            } else if (level >= 16) {
+                rank = "LEVEL_6 [ELITE_OPERATIVE]";
+                rankColor = "#C0C0C0"; // Silver for elite rank
+            } else if (level >= 12) {
+                rank = "LEVEL_5 [VETERAN_AGENT]";
                 rankColor = "#FF00FF"; // Neon Pink for high rank
-            } else if (count >= 4) {
-                rank = "LEVEL_3 [FIELD_AGENT]";
+            } else if (level >= 8) {
+                rank = "LEVEL_4 [SENIOR_AGENT]";
                 rankColor = "#00AAFF"; // Bright Blue for mid-high
-            } else if (count >= 2) {
-                rank = "LEVEL_2 [JUNIOR_AGENT]";
+            } else if (level >= 5) {
+                rank = "LEVEL_3 [FIELD_AGENT]";
                 rankColor = "#00FF88"; // Bright Green for mid-level
-            } else if (count >= 1) {
+            } else if (level >= 3) {
+                rank = "LEVEL_2 [JUNIOR_AGENT]";
+                rankColor = "#00FFEE"; // Bright Cyan for Junior Agent
+            } else if (level >= 1) {
                 rank = "LEVEL_1 [TRAINEE]";
             } else {
                 rank = "LEVEL_0 [RECRUIT]";

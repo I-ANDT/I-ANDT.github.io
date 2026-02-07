@@ -91,11 +91,24 @@ async function verifyAccess(provider, address) {
 
   if (matchedNFTs.length > 0) {
     // ✅ STORE RESULT
+
+    // store a level score based on card name, Mutant #001 = 5 point, Mutant #002 = 2 points, Mutant #003 = 1 point
+    const scoreMap = {
+      "Mutant #001": 5,
+      "Mutant #002": 2,
+      "Mutant #003": 1
+    };
+    const levelScore = matchedNFTs.reduce((sum, nft) => {
+      const score = Object.entries(scoreMap).find(([key]) => nft.name.includes(key))?.[1] || 0;
+      return sum + score;
+    }, 0);
+
     localStorage.setItem("dbc_access", JSON.stringify({
       address,
       count: matchedNFTs.length,
       names: matchedNFTs.map(n => n.name),
-      nfts: matchedNFTs
+      levelScore: levelScore,
+    //  nfts: matchedNFTs
     }));
     statusDiv.innerText = `✅ Access granted (${matchedNFTs.length} card${matchedNFTs.length > 1 ? "s" : ""})`;
     contentDiv.style.display = "block";
@@ -104,7 +117,7 @@ async function verifyAccess(provider, address) {
 
   }
   else {
-    statusDiv.innerText = "⛔ You do not own any Mutant cards";
+    statusDiv.innerText = "⛔ Sorry Recruit, you haven't captured any Mutant yet. Go out there, capture sum and unlock your vault access!";
   }
 }
 
