@@ -52,7 +52,7 @@
 
 <body>
     <header>
-        <h1>🔐 Secure Vault Access</h1>
+        <h1>🔐 Secure Vault Access (CSV-based)</h1>
         <p>Connect your wallet to verify card ownership and unlock exclusive content.</p>
     </header>
     <button id="connectBtn">Connect Wallet</button>
@@ -61,12 +61,15 @@
     <div id="status"></div>
 
     <div class="seasonal_content">
-        <p>🎉 Seasonal Event: Chapter 1 is fully live! Capture all the Mutants to climb the ranks and earn a free Valentine Mashi. 
+        <p>🎉 Seasonal Event: Chapter 1 is fully live! Capture all the Mutants to climb the ranks and earn a free
+            Valentine Mashi.
             Check out the <a href="../dossier.html" class="seasonal-link">Chapter 1</a> for
             details on the featured Mutants and their abilities. Don't miss your chance to prove your skills and earn
             exclusive rewards!</p>
         <img src="../cards/valentine.png" alt="Valentine Mashi">
-        <p id="exclusive-message" style="display:none;">YOU ARE MY VALENTINE Mashi will be dropped on 14.02 at 19:43:00 UTC || 14:43:00 EST || 11:43:00 PST</p>
+        <p id="exclusive-message" style="display:none;">YOU ARE MY VALENTINE Mashi will be dropped on 14.02 at 19:43:00
+            UTC || 14:43:00 EST || 11:43:00 PST</p>
+
     </div>
 
     <div id="exclusive-content" style="display:none;">
@@ -79,13 +82,11 @@
         <canvas id="profileCanvas" width="736" height="552" style="display:none;"></canvas>
         <img id="finalAgentCard" alt="Agent Card" />
     </div>
-    
+
 
     <a href="../index.html" class="feature-btn home-btn">← Back to Home</a>
 
-    <script src="https://cdn.jsdelivr.net/npm/ethers@6.10.0/dist/ethers.umd.min.js"></script>
-    <script src="../config/config.js"></script>
-    <script src="js/wallet.js" defer></script>
+    <script src="js/wallet2.js" defer></script>
     <script src="js/profile.js" defer></script>
 
 </html>

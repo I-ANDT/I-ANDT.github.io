@@ -1,6 +1,10 @@
-
 const CONTRACT_ADDRESS = "0x6d74e823E3cFB94A4a395b74B1E7B0F5Ca5596A3"; // Polygon NFT contract
 const DESIRED_NFT_NAMES = ["Mutant #0"]; // Only this NFT collection can unlock
+const SCORE_MAP = {
+  "Mutant #001": 5,
+  "Mutant #002": 2,
+  "Mutant #003": 1
+};
 const CONTRACT_ABI = [
   "function balanceOf(address owner) view returns (uint256)",
   "function name() view returns (string)"
@@ -9,21 +13,22 @@ const CONTRACT_ABI = [
 const connectBtn = document.getElementById("connectBtn");
 const statusDiv = document.getElementById("status");
 const contentDiv = document.getElementById("exclusive-content");
+const exclusiveMessage = document.getElementById("exclusive-message");
 
 async function initProfileCard() {
-    const address = localStorage.getItem("walletAddress");
-    if (!address) return; // no wallet connected yet
+  const address = localStorage.getItem("walletAddress");
+  if (!address) return; // no wallet connected yet
 
-    try {
-        // Fetch NFT info first (optional, you already do it in verifyAccess)
-        const profileData = await fetch(`https://avatar-artists-guild.web.app/api/mashers/latest?wallet=${address}`)
-            .then(r => r.json());
+  try {
+    // Fetch NFT info first (optional, you already do it in verifyAccess)
+    const profileData = await fetch(`https://avatar-artists-guild.web.app/api/mashers/latest?wallet=${address}`)
+      .then(r => r.json());
 
-        // Draw the card
-        drawProfileCard(profileData);
-    } catch (err) {
-        console.error("Failed to fetch avatar data:", err);
-    }
+    // Draw the card
+    drawProfileCard(profileData);
+  } catch (err) {
+    console.error("Failed to fetch avatar data:", err);
+  }
 }
 
 async function fetchNFTs(address) {
@@ -67,7 +72,13 @@ async function verifyAccess(provider, address) {
   const balance = await contract.balanceOf(address);
 
   if (balance === 0n) {
-    statusDiv.innerText = "⛔ You do not own any Mashi Mutant cards";
+    statusDiv.innerHTML = `
+    ⛔ You do not own any Mashi Mutant cards<br><br>
+    If you think this is a mistake, try reconnecting here:<br><br><br>
+    <a href="../vault/vault2.html" class="feature-btn" id="mailbox-link">
+      Vault Work 2.0 (CSV-based)
+    </a>
+  `;
     return;
   }
 
@@ -93,13 +104,9 @@ async function verifyAccess(provider, address) {
     // ✅ STORE RESULT
 
     // store a level score based on card name, Mutant #001 = 5 point, Mutant #002 = 2 points, Mutant #003 = 1 point
-    const scoreMap = {
-      "Mutant #001": 5,
-      "Mutant #002": 2,
-      "Mutant #003": 1
-    };
+
     const levelScore = matchedNFTs.reduce((sum, nft) => {
-      const score = Object.entries(scoreMap).find(([key]) => nft.name.includes(key))?.[1] || 0;
+      const score = Object.entries(SCORE_MAP).find(([key]) => nft.name.includes(key))?.[1] || 0;
       return sum + score;
     }, 0);
 
@@ -108,16 +115,23 @@ async function verifyAccess(provider, address) {
       count: matchedNFTs.length,
       names: matchedNFTs.map(n => n.name),
       levelScore: levelScore,
-    //  nfts: matchedNFTs
+      //  nfts: matchedNFTs
     }));
     statusDiv.innerText = `✅ Access granted (${matchedNFTs.length} card${matchedNFTs.length > 1 ? "s" : ""})`;
     contentDiv.style.display = "block";
+    exclusiveMessage.style.display = "block";
     connectBtn.style.display = "none";
     initProfileCard();
 
   }
   else {
-    statusDiv.innerText = "⛔ Sorry Recruit, you haven't captured any Mutant yet. Go out there, capture sum and unlock your vault access!";
+    statusDiv.innerHTML = `
+    ⛔ Sorry Recruit, you haven't captured any Mutant yet. Go out there, capture sum and unlock your vault access!<br><br>
+    If you think this is a mistake, try reconnecting here:<br><br><br>
+    <a href="../vault/vault2.html" class="feature-btn" id="mailbox-link">
+      Vault Work 2.0 (CSV-based)
+    </a>
+  `;
   }
 }
 
