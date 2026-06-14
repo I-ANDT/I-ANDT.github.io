@@ -85,7 +85,7 @@ async function drawProfileCard(userData) {
     ctx.shadowBlur = 0;
     ctx.textAlign = "left";
 
-    drawDataLine("OPERATIVE IDENTIFIER", `AGENT_M [${userData?.id || "0000"}]`, textX, startY);
+    drawDataLine("OPERATIVE IDENTIFIER", `AGENT_X [${userData?.id || "0000"}]`, textX, startY);
     drawDataLine("STATUS", "ACTIVE", textX, startY + (lineHeight * 2));
 
     // --- DYNAMIC RANK LOGIC ---
