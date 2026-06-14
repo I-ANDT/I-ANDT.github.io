@@ -2,21 +2,21 @@
 const CONTRACT_ADDRESS = "0x6d74e823E3cFB94A4a395b74B1E7B0F5Ca5596A3"; // Polygon NFT contract
 const ALCHEMY_API = "https://polygon-mainnet.g.alchemy.com/v2/-Qpug5c39c7LOIsdRWZPH";
 
-const DESIRED_FILTER = "by i&t";
+const DESIRED_FILTER = "i&t";
 const SCORE_MAP = {
   "bull": 3,
   "schlaflos": 1,
-  "Crocodyne": 2,
-  "KATZ!": 1,
-  "Choris": 3,
+  "crocodyne": 2,
+  "katz!": 1,
+  "choris": 3,
   "#001": 5,
   "snuggin": 1,
   "#002": 2,
-  "L46": 1,
-  "K46": 1,
-  "Venom": 1,
+  "l46": 1,
+  "k46": 1,
+  "venom": 1,
   "#003": 1,
-  "Valentine": 1,
+  "valentine": 1,
   "ape": 1,
   "tuesday": 1,
   "sealpollo": 1,
@@ -27,9 +27,9 @@ const SCORE_MAP = {
   "wen": 1,
   "kaito": 1,
   "cruise": 1,
-  "Goldstruck": 2,
-  "Naga": 2,
-  "Listen": 1,
+  "goldstruck": 2,
+  "naga": 2,
+  "listen": 1,
 };
 
 const walletForm = document.getElementById("walletForm");
@@ -59,16 +59,43 @@ async function initProfileCard() {
 
 // Fetches owned NFTs filtered by the contract address from Alchemy
 async function fetchNFTs(address) {
-  const url = `${ALCHEMY_API}/getNFTs/?owner=${address}&contractAddresses[]=${CONTRACT_ADDRESS}`;
+  let allNfts = [];
+  let pageKey = null;
+  let keepFetching = true;
+
   try {
-    const res = await fetch(url);
-    if (!res.ok) throw new Error(`Alchemy API error: ${res.statusText}`);
-    const data = await res.json();
-    console.log("Raw Alchemy data:", data); // Debugging
-    return data.ownedNfts || [];
+    while (keepFetching) {
+      // Append the pageKey to the URL if we have one from a previous page
+      let url = `${ALCHEMY_API}/getNFTs/?owner=${address}&contractAddresses[]=${CONTRACT_ADDRESS}`;
+      if (pageKey) {
+        url += `&pageKey=${pageKey}`;
+      }
+
+      const res = await fetch(url);
+      if (!res.ok) throw new Error(`Alchemy API error: ${res.statusText}`);
+      
+      const data = await res.json();
+      
+      // Combine newly fetched NFTs with our master array
+      if (data.ownedNfts && data.ownedNfts.length > 0) {
+        allNfts = allNfts.concat(data.ownedNfts);
+      }
+
+      // If Alchemy returns a pageKey, it means there are more items to fetch
+      if (data.pageKey) {
+        pageKey = data.pageKey;
+      } else {
+        keepFetching = false; // No more pages left!
+      }
+    }
+
+    console.log(`Total fetched NFTs from Alchemy: ${allNfts.length}`, allNfts); // Debugging
+    return allNfts;
+
   } catch (error) {
     console.error("Error fetching from Alchemy:", error);
-    return [];
+    // Return whatever we managed to fetch before the error hit, or fallback empty
+    return allNfts.length > 0 ? allNfts : [];
   }
 }
 

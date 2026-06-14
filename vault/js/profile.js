@@ -4,11 +4,11 @@
 
 async function drawProfileCard(userData) {
   const SCORE_MAP = {
-    "cyber bull": 3, "schlaflos": 1, "Crocodyne": 2, "KATZ!": 1, "Choris": 3,
+    "bull": 3, "schlaflos": 1, "crocodyne": 2, "KATZ!": 1, "Choris": 3,
     "#001": 5, "snuggin": 1, "#002": 2, "L46": 1, "K46": 1, "Venom": 1,
     "#003": 1, "Valentine": 1, "ape": 1, "tuesday": 1, "sealpollo": 1,
     "hellfire": 1, "angel": 1, "momoka": 1, "downvote": 1, "wen": 1,
-    "kaito": 1, "cruise": 1, "goldstruck": 2, "Naga Moto": 2, "Listen": 1
+    "kaito": 1, "cruise": 1, "goldstruck": 2, "naga": 2, "listen": 1
   };
   // Calculate maximum total score dynamically based on active collection size
   const MAX_POSSIBLE_SCORE = Object.values(SCORE_MAP).reduce((sum, val) => sum + val, 0) + 20;
