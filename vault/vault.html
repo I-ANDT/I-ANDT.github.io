@@ -4,88 +4,61 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vault</title>
+    <title>The Mutant | Vault</title>
     <link rel="stylesheet" href="../css/style.css">
-    <style>
-        #profileCanvas,
-        #finalAgentCard {
-            display: block;
-            margin: 20px auto;
-            width: 100%;
-            /* scale to container width */
-            max-width: 400px;
-            /* don't grow bigger than actual resolution */
-            height: auto;
-            /* maintain aspect ratio */
-            border: 3px solid #ff00ff;
-            border-radius: 12px;
-            box-shadow: 0 0 20px #ff00ff, 0 0 40px rgba(0, 255, 255, 0.6), inset 0 0 10px #00ffff;
-            background-color: #111;
-        }
-
-        /* Hide the canvas once the image is ready */
-        #profileCanvas {
-            display: none;
-        }
-
-        #downloadProfileBtn {
-            display: block;
-            margin: 10px auto;
-            padding: 10px 20px;
-            background: #000;
-            color: #00ffff;
-            border: 2px solid #ff00ff;
-            font-weight: bold;
-            cursor: pointer;
-        }
-
-        #downloadProfileBtn:hover {
-            background: #1a001a;
-        }
-
-        #finalAgentCard:active {
-            filter: brightness(1.5) contrast(1.2);
-            border-color: #FF00FF;
-        }
-    </style>
 </head>
 
 <body>
-    <header>
-        <h1>🔐 Secure Vault Access</h1>
-        <p>Connect your wallet to verify card ownership and unlock exclusive content.</p>
-    </header>
-    <button id="connectBtn">Connect Wallet</button>
+    <div class="site-shell">
+        <header class="topbar">
+            <a class="brand-mark" href="../index.html" aria-label="The Mutant home">
+                <span class="brand-sigil">
+                    <img src="../cards/analysing.gif">
+                </span>
+                <span>
+                    <strong>The Mutant</strong>
+                    <small>Vault Access</small>
+                </span>
+            </a>
 
+            <nav class="nav-links" aria-label="Primary navigation">
+                <a href="../mailbox/index.html">Mailbox</a>
+                <a href="../dossier.html">Dossier</a>
+                <a href="../vault/vault.html" aria-current="page">Vault</a>
+            </nav>
+        </header>
 
-    <div id="status"></div>
+        <main>
+            <section class="vault-hero">
+                <div>
+                    <p class="eyebrow">Owner verification</p>
+                    <h1>Unlock your DBC agent clearance.</h1>
+                    <p>Enter your wallet address to verify captured Mutant cards, calculate your level score, and
+                        generate your agent profile.</p>
+                    <form id="walletForm" class="wallet-form">
+                        <label for="walletAddressInput">Wallet address</label>
+                        <div class="wallet-input-row">
+                            <input id="walletAddressInput" class="wallet-input" name="walletAddress" type="text"
+                                inputmode="text" autocomplete="off" placeholder="0x..." required>
+                            <button id="connectBtn" class="btn btn-primary" type="submit">Verify Access</button>
+                        </div>
+                    </form>
+                    <div id="status" class="status-line" role="status"></div>
+                </div>
+            </section>
 
-    <div class="seasonal_content">
-        <p>🎉 Seasonal Event: Chapter 1 is fully live! Capture all the Mutants to climb the ranks and earn a free Valentine Mashi. 
-            Check out the <a href="../dossier.html" class="seasonal-link">Chapter 1</a> for
-            details on the featured Mutants and their abilities. Don't miss your chance to prove your skills and earn
-            exclusive rewards!</p>
-        <img src="../cards/valentine.png" alt="Valentine Mashi">
-    </div>        <p id="exclusive-message" style="display:none;">YOU ARE MY VALENTINE Mashi will be dropped on 14.02</p>
-
-
-    <div id="exclusive-content" style="display:none;">
-        <h2>🧬 Identity Verified</h2>
-        <p>Welcome, Agent. Your credentials have been authenticated</p>
-        <br>
-        <div class="vault-links">
-            <!--             <a href="../training_center/index.html" class="feature-btn">Training Center</a>-->
-        </div>
-        <canvas id="profileCanvas" width="736" height="552" style="display:none;"></canvas>
-        <img id="finalAgentCard" alt="Agent Card" />
+            <section id="exclusive-content" style="display:none;">
+                <p class="eyebrow">Identity verified</p>
+                <h2>Welcome, Agent.</h2>
+                <p>Your credentials have been authenticated. Profile rendering is active.</p>
+                <canvas id="profileCanvas" width="736" height="552" style="display:none;"></canvas>
+                <img id="finalAgentCard" alt="Generated DBC agent card">
+            </section>
+        </main>
     </div>
-    
 
-    <a href="../index.html" class="feature-btn home-btn">← Back to Home</a>
-
-    <script src="https://cdn.jsdelivr.net/npm/ethers@6.10.0/dist/ethers.umd.min.js"></script>
-    <script src="../config/config.js"></script>
     <script src="js/wallet.js" defer></script>
     <script src="js/profile.js" defer></script>
+</body>
 
 </html>

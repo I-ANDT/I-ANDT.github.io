@@ -4,34 +4,85 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>A-Files</title>
+    <meta name="description" content="The Mutant: cyberpunk pixel-art NFT trading cards set in 2046.">
+    <title>The Mutants | Anomalous Fauna Network</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
 
 <body>
-    <div class="container">
-        <header>
-            <h1>Anomalous Fauna</h1>
+    <div class="site-shell">
+        <header class="topbar">
+            <a class="brand-mark" href="index.html" aria-label="The Mutant home">
+                <span class="brand-sigil">
+                    <img src="cards/analysing.gif">
+                </span>
+                <span>
+                    <strong>The Mutants</strong>
+                    <small>Anomalous Fauna Network</small>
+                </span>
+            </a>
+
+            <nav class="nav-links" aria-label="Primary navigation">
+                <a href="mailbox/index.html">Mailbox</a>
+                <a href="dossier.html">Dossier</a>
+                <a href="vault/vault.html">Vault</a>
+            </nav>
         </header>
 
-        <section class="lore">
-            <p id="lore-text"></p>
-        </section>
+        <main>
+            <section>
+                    <p class="eyebrow">DBC emergency broadcast / 2046</p>
+                    <h1>Track and capture the mutated animals</h1>
+                    <p class="hero-lede">
+                        A pixel-art trading card series
+                    </p>
 
-        <nav class="features">
-            <a href="mailbox/index.html" class="feature-btn" id="mailbox-link">Mailbox</a>
-            <a href="dossier.html" class="feature-btn">Dossier</a>
-            <a href="vault/wallet_warning.html" class="feature-btn">Vault</a>
-        </nav>
+                    <div class="ticker" aria-live="polite">
+                        <span>Live signal</span>
+                        <strong id="lore-text"></strong>
+                    </div>
+            </section>
+
+            <section class="command-grid" aria-label="Containment network">
+                <a class="command-panel" href="mailbox/index.html">
+                    <span class="panel-code">01</span>
+                    <h2>Mailbox</h2>
+                    <p>Intercepted agency emails, weekly news fragments, sightings, and drop alerts.</p>
+                </a>
+                <a class="command-panel" href="dossier.html">
+                    <span class="panel-code">02</span>
+                    <h2>Dossier</h2>
+                    <p>Chapter 1 card files with class, mutation index, stats, and known abilities.</p>
+                </a>
+                <a class="command-panel" href="vault/vault.html">
+                    <span class="panel-code">03</span>
+                    <h2>Vault</h2>
+                    <p>Verify card ownership, unlock agent identity, and access holder-only intel.</p>
+                </a>
+            </section>
+
+            <section class="intel-band">
+                <div>
+                    <p class="eyebrow">Field tools</p>
+                    <h2>Train, capture, rank up.</h2>
+                    <p>
+                        The network is expanding beyond card drops: holder tools, profile cards,
+                        field intel, and access-controlled rewards live here as the lore grows.
+                    </p>
+                </div>
+                <div class="tool-links">
+                    <a href="https://mash-it.io/iandt" target="_blank" rel="noopener noreferrer" class="btn btn-ghost">Shop</a>
+                </div>
+            </section>
+        </main>
+
+        <footer class="site-footer">
+            <span>Created by I-AND-T</span>
+            <a href="https://linktr.ee/IANDT_ART" target="_blank" rel="noopener noreferrer">Linktree</a>
+        </footer>
     </div>
 
     <script src="js/script.js"></script>
-
-    <footer style="text-align: center; font-size: 0.8em; color: #fffdfd; letter-spacing: 1px; margin-top: 2em;">
-        CREATED BY I-AND-T | <a href="https://linktr.ee/IANDT_ART" target="_blank"
-            style="color: #f0f; text-decoration: none; text-shadow: 0 0 5px #f0f, 0 0 10px #f0f;">LINKTREE</a>
-    </footer>
 </body>
-
 
 </html>

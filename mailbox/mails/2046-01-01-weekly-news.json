@@ -1,0 +1,15 @@
+{
+  "id": 2,
+  "sender": "worldnews@mashit.com",
+  "date": "2046-01-01 14:23",
+  "subject": "Weekly News: 01/01/2046",
+  "preview": "Lower Manhattan disappearances and a Pacific sky object.",
+  "bodyHtml": "<p>Local authorities are investigating missing-person reports following New Year's Eve celebrations in Lower Manhattan.</p><p>Several individuals were last seen near waterfront transit infrastructure connected to a long-decommissioned subway route.</p><ul><li>Personal belongings recovered near tunnel entrances and restricted service doors.</li><li>Reports of rapid scratching, skittering, and high-frequency squeaks in the area.</li></ul><p>As Southeast Asia welcomed 2046, a mysterious object was observed in the central Pacific Ocean, roughly 1,200 kilometers east of the Mariana Islands.</p>",
+  "images": [
+    {
+      "src": "img/abduction.png",
+      "alt": "Pacific object sighting",
+      "captionHtml": "Recorded by scientists from the University of Shanghai. Origin and purpose remain unknown."
+    }
+  ]
+}

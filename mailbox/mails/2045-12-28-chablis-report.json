@@ -1,0 +1,15 @@
+{
+  "id": 1,
+  "sender": "ops@dbc.gov",
+  "date": "2045-12-28 10:15",
+  "subject": "[CLASSIFIED] New Mutation Report",
+  "preview": "Entry #001: Chablis, the Ninefold Gale.",
+  "drop": "29-12 18:05:00 UTC || 13:05:00 EST",
+  "bodyHtml": "<h3>[CLASSIFIED - LEVEL IV ACCESS]</h3><p><strong>Anomalous Fauna Registry - Entry #001</strong></p><p><strong>Designation:</strong> CHABLIS<br><strong>Known Alias:</strong> \"The Ninefold Gale\"<br><strong>Species Origin:</strong> <em>Pavo mutatus</em><br><strong>Class:</strong> Ventus</p><p><strong>Last Recorded Location:</strong> Northern shore of Lake Kawaguchi, Yamanashi Prefecture, Japan<br><strong>Mutation Index:</strong> 9<br><strong>Threat Level:</strong> Extreme</p><p><strong>Physical Description:</strong> Large avian entity with nine cranial structures.</p><p><strong>Behavioral Notes:</strong> Capable of rapid repositioning. Further wind-pressure data is redacted.</p><blockquote>Internal Directive: Do not engage during high wind conditions.</blockquote>",
+  "images": [
+    {
+      "src": "img/chablis.png",
+      "alt": "Chablis evidence image"
+    }
+  ]
+}

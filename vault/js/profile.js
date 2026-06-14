@@ -1,201 +1,218 @@
-/**
- * profile.js 
- * Optimized for asynchronous image loading and canvas rendering
- */
+
+
+// Calculate maximum total score dynamically based on active collection size
 
 async function drawProfileCard(userData) {
-    const canvas = document.getElementById("profileCanvas");
-    const finalImg = document.getElementById("finalAgentCard");
-    if (!canvas || !finalImg) {
-        console.error("Canvas element not found");
-        return;
-    }
-    const ctx = canvas.getContext("2d");
+  const SCORE_MAP = {
+    "cyber bull": 3, "schlaflos": 1, "Crocodyne": 2, "KATZ!": 1, "Choris": 3,
+    "#001": 5, "snuggin": 1, "#002": 2, "L46": 1, "K46": 1, "Venom": 1,
+    "#003": 1, "Valentine": 1, "ape": 1, "tuesday": 1, "sealpollo": 1,
+    "hellfire": 1, "angel": 1, "momoka": 1, "downvote": 1, "wen": 1,
+    "kaito": 1, "cruise": 1, "goldstruck": 2, "Naga Moto": 2, "Listen": 1
+  };
+  // Calculate maximum total score dynamically based on active collection size
+  const MAX_POSSIBLE_SCORE = Object.values(SCORE_MAP).reduce((sum, val) => sum + val, 0) + 30;
 
-    console.log("🎨 Initializing Agent Card render...", userData);
+  const canvas = document.getElementById("profileCanvas");
+  const finalImg = document.getElementById("finalAgentCard");
 
-    try {
-        // 1. Prepare Background and Layers
-        const background = new Image();
-        background.crossOrigin = "anonymous";
-        background.src = "./card.png";
+  if (!canvas || !finalImg) {
+    console.error("Canvas element not found");
+    return;
+  }
 
-        const layers = userData.assets.filter(asset => asset.name !== "background");
+  const ctx = canvas.getContext("2d");
+  console.log("Initializing Agent Card render...", userData);
 
-        // 2. Load ALL images (Background + Assets) simultaneously
-        const [bgImg, ...assetImages] = await Promise.all([
-            // Load Background
-            new Promise((resolve, reject) => {
-                background.onload = () => resolve(background);
-                background.onerror = () => reject(new Error("Failed to load background image"));
-            }),
-            // Load Avatar Layers
-            ...layers.map(asset => {
-                return new Promise((resolve) => {
-                    const img = new Image();
-                    img.crossOrigin = "anonymous";
-                    img.src = asset.image;
-                    img.onload = () => resolve(img);
-                    img.onerror = () => {
-                        console.warn(`Failed to load layer: ${asset.name}`);
-                        resolve(null); // Resolve null so Promise.all doesn't fail
-                    };
-                });
-            })
-        ]);
+  try {
+    const background = new Image();
+    background.crossOrigin = "anonymous";
+    background.src = "./card.png";
 
-        // 3. Clear Canvas before drawing
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
+    const layers = Array.isArray(userData?.assets)
+      ? userData.assets.filter(asset => asset.name !== "background")
+      : [];
 
-        // 4. Draw Background
-        ctx.drawImage(bgImg, 0, 0, canvas.width, canvas.height);
-
-        // 5. Draw Avatar Layers (filtered for any nulls)
-        const avatarWidth = 190;
-        const avatarHeight = 300;
-        const x = canvas.width / 4 - avatarWidth / 2;
-        const y = canvas.height / 2 - avatarHeight / 2;
-
-        assetImages.forEach(img => {
-            if (img) ctx.drawImage(img, x, y, avatarWidth, avatarHeight);
-        });
-
-        // 6. Draw Text Overlay (Cyberpunk Styled)
-        const textX = canvas.width - avatarWidth - 220;
-        const startY = canvas.height / 2 - avatarHeight / 4;
-        const lineHeight = 35;
-
-        // Helper function for "Label: Value" style
-        const drawDataLine = (label, value, x, y, color = "#00FFEE") => {
-            ctx.font = "bold 18px 'Courier New', monospace";
-            ctx.fillStyle = "rgba(0, 255, 238, 0.5)"; // Dimmer label
-            ctx.fillText(label, x, y);
-
-            ctx.font = "bold 22px 'Courier New', monospace";
-            ctx.fillStyle = color; // Bright value
-            ctx.fillText(value, x, y + 20);
+    const [bgImg, ...assetImages] = await Promise.all([
+      new Promise((resolve, reject) => {
+        background.onload = () => resolve(background);
+        background.onerror = () => reject(new Error("Failed to load background image"));
+      }),
+      ...layers.map(asset => new Promise(resolve => {
+        const img = new Image();
+        img.crossOrigin = "anonymous";
+        img.src = asset.image;
+        img.onload = () => resolve(img);
+        img.onerror = () => {
+          console.warn(`Failed to load layer: ${asset.name}`);
+          resolve(null);
         };
+      }))
+    ]);
 
-        // --- DRAWING THE DATA ---
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.drawImage(bgImg, 0, 0, canvas.width, canvas.height);
 
-        // Main Title
-        ctx.textAlign = "center";
-        // Use a larger size (e.g., 42px) and "black" or "900" weight if the font supports it
-        ctx.font = "900 35px 'Courier New', monospace";
+    const avatarWidth = 190;
+    const avatarHeight = 300;
+    const x = canvas.width / 4 - avatarWidth / 2;
+    const y = canvas.height / 2 - avatarHeight / 2;
 
-        // Create a slight "glow" effect for the title
-        ctx.shadowColor = "rgba(0, 255, 238, 0.5)";
-        ctx.shadowBlur = 10;
-        ctx.fillStyle = "#00FFEE";
-        ctx.fillText(">> D.B.C. CLEARANCE CARD <<", canvas.width / 2, canvas.height / 2 - avatarHeight / 2);
-        // Reset shadow so it doesn't affect the rest of the text
-        ctx.shadowBlur = 0;
-        ctx.textAlign = "left";
+    assetImages.forEach(img => {
+      if (img) ctx.drawImage(img, x, y, avatarWidth, avatarHeight);
+    });
 
-        // 1. Subject Name
-        drawDataLine("OPERATIVE IDENTIFIER", `AGENT_Ⅹ [${userData.id || "0000"}]`, textX, startY);
+    const textX = canvas.width - avatarWidth - 220;
+    const startY = canvas.height / 2 - avatarHeight / 4;
+    const lineHeight = 35;
 
-        // 2. Status (Dynamic coloring)
-        drawDataLine("STATUS", "ACTIVE", textX, startY + (lineHeight * 2));
+    const drawDataLine = (label, value, lineX, lineY, color = "#00FFEE") => {
+      ctx.font = "bold 18px 'Courier New', monospace";
+      ctx.fillStyle = "rgba(0, 255, 238, 0.5)";
+      ctx.fillText(label, lineX, lineY);
 
-        // 3. Clearance / Rank Logic
-        const dbcAccess = JSON.parse(localStorage.getItem("dbc_access"));
-        let rank = "LEVEL_0 [RECRUIT]";
-        let rankColor = "#00FFEE";
+      ctx.font = "bold 22px 'Courier New', monospace";
+      ctx.fillStyle = color;
+      ctx.fillText(value, lineX, lineY + 20);
+    };
 
-        if (dbcAccess) {
-            const level = dbcAccess.levelScore || 0; // Use levelScore for rank calculation
-            if (level >= 50) {
-                rank = "LEVEL_10 [OVERSEER]";
-                rankColor = "#FF0000"; // Red for highest rank
-            } else if (level >= 40) {
-                rank = "LEVEL_9 [MASTER_STRATEGIST]";
-                rankColor = "#FF5500"; // Orange-Red for high rank
-            } else if (level >= 30) {
-                rank = "LEVEL_8 [COMMANDER]";
-                rankColor = "#FFAA00"; // Goldish for commander rank
-            } else if (level >= 22) {
-                rank = "LEVEL_7 [TACTICAL_LEAD]";
-                rankColor = "#7000FF"; // Purple for tactical lead
-            } else if (level >= 16) {
-                rank = "LEVEL_6 [ELITE_OPERATIVE]";
-                rankColor = "#C0C0C0"; // Silver for elite rank
-            } else if (level >= 12) {
-                rank = "LEVEL_5 [VETERAN_AGENT]";
-                rankColor = "#FF00FF"; // Neon Pink for high rank
-            } else if (level >= 8) {
-                rank = "LEVEL_4 [SENIOR_AGENT]";
-                rankColor = "#00AAFF"; // Bright Blue for mid-high
-            } else if (level >= 5) {
-                rank = "LEVEL_3 [FIELD_AGENT]";
-                rankColor = "#00FF88"; // Bright Green for mid-level
-            } else if (level >= 3) {
-                rank = "LEVEL_2 [JUNIOR_AGENT]";
-                rankColor = "#00FFEE"; // Bright Cyan for Junior Agent
-            } else if (level >= 1) {
-                rank = "LEVEL_1 [TRAINEE]";
-            } else {
-                rank = "LEVEL_0 [RECRUIT]";
-            }
-        }
-        drawDataLine("CLEARANCE LEVEL", rank, textX, startY + (lineHeight * 4), rankColor);
+    ctx.textAlign = "center";
+    ctx.font = "900 35px 'Courier New', monospace";
+    ctx.shadowColor = "rgba(0, 255, 238, 0.5)";
+    ctx.shadowBlur = 10;
+    ctx.fillStyle = "#00FFEE";
+    ctx.fillText(">> D.B.C. CLEARANCE CARD <<", canvas.width / 2, canvas.height / 2 - avatarHeight / 2);
+    ctx.shadowBlur = 0;
+    ctx.textAlign = "left";
 
-        // 4. Decommission Date
-        drawDataLine("DECOMMISSION DATE", userData.expiry || "12.31.2046", textX, startY + (lineHeight * 6));
+    drawDataLine("OPERATIVE IDENTIFIER", `AGENT_M [${userData?.id || "0000"}]`, textX, startY);
+    drawDataLine("STATUS", "ACTIVE", textX, startY + (lineHeight * 2));
 
-        // Footer - Department Branding
-        ctx.font = "16px 'Courier New', monospace";
-        ctx.fillStyle = "#FF00FF";
-        ctx.textAlign = "center";
-        ctx.fillText("PROTOCOL: NEURAL-LINK ENFORCED // SECURED ACCESS ONLY", canvas.width / 2, canvas.height - 70);
+    // --- DYNAMIC RANK LOGIC ---
+    const dbcAccess = JSON.parse(localStorage.getItem("dbc_access"));
+    let rank = "LEVEL_0 [RECRUIT]";
+    let rankColor = "#00FFEE";
+    let isHighRank = false;
+    let numericLevel = 0;
 
-        console.log("✅ Card rendered successfully.");
+    if (dbcAccess) {
+      const userScore = dbcAccess.levelScore || 0;
+      // Calculate percentage dynamically based on the current size of SCORE_MAP
+      const completionPercentage = (userScore / MAX_POSSIBLE_SCORE) * 100;
 
-        // 4. THE SWITCH: Canvas -> Image tag
-        // This is what makes it savable in MetaMask!
-        const dataURL = canvas.toDataURL("image/png");
-        finalImg.src = dataURL;
-
-    } catch (error) {
-        console.error("❌ Rendering error:", error);
+      if (completionPercentage >= 95) {
+        rank = "LEVEL_10 [OVERSEER]";
+        rankColor = "#FF0055";
+        numericLevel = 10;
+        isHighRank = true;
+      } else if (completionPercentage >= 80) {
+        rank = "LEVEL_9 [MASTER_STRATEGIST]";
+        rankColor = "#FF5500";
+        numericLevel = 9;
+        isHighRank = true;
+      } else if (completionPercentage >= 65) {
+        rank = "LEVEL_8 [COMMANDER]";
+        rankColor = "#FFAA00";
+        numericLevel = 8;
+        isHighRank = true;
+      } else if (completionPercentage >= 50) {
+        rank = "LEVEL_7 [TACTICAL_LEAD]";
+        rankColor = "#7000FF";
+        numericLevel = 7;
+      } else if (completionPercentage >= 35) {
+        rank = "LEVEL_6 [ELITE_OPERATIVE]";
+        rankColor = "#C0C0C0";
+        numericLevel = 6;
+      } else if (completionPercentage >= 25) {
+        rank = "LEVEL_5 [VETERAN_AGENT]";
+        rankColor = "#FF00FF";
+        numericLevel = 5;
+      } else if (completionPercentage >= 15) {
+        rank = "LEVEL_4 [SENIOR_AGENT]";
+        rankColor = "#00AAFF";
+        numericLevel = 4;
+      } else if (completionPercentage >= 10) {
+        rank = "LEVEL_3 [FIELD_AGENT]";
+        rankColor = "#00FF88";
+        numericLevel = 3;
+      } else if (completionPercentage >= 5) {
+        rank = "LEVEL_2 [JUNIOR_AGENT]";
+        rankColor = "#00FFEE";
+        numericLevel = 2;
+      } else if (userScore >= 1) {
+        rank = "LEVEL_1 [TRAINEE]";
+        rankColor = "#00FFEE";
+        numericLevel = 1;
+      }
     }
+
+    drawDataLine("CLEARANCE LEVEL", rank, textX, startY + (lineHeight * 4), rankColor);
+    drawDataLine("DECOMMISSION DATE", userData?.expiry || "12.31.2046", textX, startY + (lineHeight * 6));
+
+    ctx.font = "16px 'Courier New', monospace";
+    ctx.fillStyle = "#FF00FF";
+    ctx.textAlign = "center";
+    ctx.fillText("PROTOCOL: NEURAL-LINK ENFORCED // SECURED ACCESS ONLY", canvas.width / 2, canvas.height - 70);
+
+    // --- VISUAL PREMIUM EFFECT HANDLERS ---
+    if (isHighRank) {
+      // 1. Outer Holographic Glowing Frame Border
+      ctx.lineWidth = 8;
+      ctx.strokeStyle = rankColor;
+      ctx.shadowColor = rankColor;
+      ctx.shadowBlur = 25;
+      ctx.strokeRect(4, 4, canvas.width - 8, canvas.height - 8);
+      ctx.shadowBlur = 0; // Reset canvas glow
+
+      // 2. Cyber Sparkles / Stars Matrix Overlay
+      ctx.fillStyle = "#FFFFFF";
+      const sparkleCoordinates = [
+        { sx: 40, sy: 60 }, { sx: canvas.width - 50, sy: 80 },
+        { sx: 70, sy: canvas.height - 120 }, { sx: canvas.width - 120, sy: canvas.height - 150 },
+        { sx: canvas.width / 2 + 80, sy: 110 }
+      ];
+
+      sparkleCoordinates.forEach(pos => {
+        ctx.shadowColor = "#FFFFFF";
+        ctx.shadowBlur = 12;
+        ctx.beginPath();
+        // Draws clean 4-point crosshair stars on canvas
+        ctx.moveTo(pos.sx, pos.sy - 8);
+        ctx.lineTo(pos.sx, pos.sy + 8);
+        ctx.moveTo(pos.sx - 8, pos.sy);
+        ctx.lineTo(pos.sx + 8, pos.sy);
+        ctx.lineWidth = 2;
+        ctx.strokeStyle = "#FFFFFF";
+        ctx.stroke();
+      });
+      ctx.shadowBlur = 0;
+
+      // 3. Diagonal High-Rank Clearance Badge Stamp
+      ctx.save();
+      ctx.translate(canvas.width - 130, 95);
+      ctx.rotate((15 * Math.PI) / 180); // Rotate 15 degrees
+
+      // Stamp Frame Box
+      ctx.lineWidth = 3;
+      ctx.strokeStyle = rankColor;
+      ctx.fillStyle = "rgba(0, 0, 0, 0.6)";
+      ctx.fillRect(-85, -20, 170, 40);
+      ctx.strokeRect(-85, -20, 170, 40);
+
+      // Stamp Inner Text
+      ctx.font = "black 14px 'Courier New', monospace";
+      ctx.fillStyle = rankColor;
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      ctx.fillText(numericLevel === 10 ? "★ OVERSEER ★" : "★ PREMIUM ★", 0, 2);
+      ctx.restore();
+    }
+
+    finalImg.src = canvas.toDataURL("image/png");
+    console.log("Card rendered successfully.");
+  } catch (error) {
+    console.error("Rendering error:", error);
+  }
 }
 
-// Global scope export
 window.drawProfileCard = drawProfileCard;
-
-/* // Handle Download Button for PC and Mobile
-window.addEventListener("DOMContentLoaded", () => {
-    const downloadBtn = document.getElementById("downloadProfileBtn");
-
-    if (downloadBtn) {
-        downloadBtn.onclick = () => {
-            const canvas = document.getElementById("profileCanvas");
-
-            // 1. Convert canvas to a Blob (Better for mobile support)
-            canvas.toBlob((blob) => {
-                if (!blob) {
-                    console.error("Failed to create image blob");
-                    return;
-                }
-
-                // 2. Create a temporary URL for the file
-                const url = URL.createObjectURL(blob);
-                const link = document.createElement("a");
-
-                link.download = "agent_card.png";
-                link.href = url;
-
-                // 3. Append to body (Required for some mobile browsers)
-                document.body.appendChild(link);
-                link.click();
-
-                // 4. Cleanup
-                setTimeout(() => {
-                    document.body.removeChild(link);
-                    URL.revokeObjectURL(url);
-                }, 100);
-            }, "image/png");
-        };
-    }
-}); */

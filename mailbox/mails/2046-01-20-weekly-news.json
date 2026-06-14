@@ -1,0 +1,15 @@
+{
+  "id": 4,
+  "sender": "worldnews@mashit.com",
+  "date": "2046-01-20 16:51",
+  "subject": "Weekly News: 20/01/2046",
+  "preview": "Recovered phone footage from the New Year's Eve tunnel incident.",
+  "bodyHtml": "<p>Footage recovered from a mobile phone is believed to be linked to the New Year's Eve incident in Lower Manhattan.</p><p>Early reports suggest the video shows an underground gathering shortly before several individuals were reported missing.</p>",
+  "images": [
+    {
+      "src": "img/party_rat.png",
+      "alt": "Recovered tunnel party footage",
+      "captionHtml": "The phone was found near the Statue of Liberty and later spread on <a href=\"https://www.instagram.com/reel/DTVKwr3jBia/?igsh=bXF4bmFqNWtvMTBx\" target=\"_blank\" rel=\"noopener noreferrer\">social media</a>."
+    }
+  ]
+}

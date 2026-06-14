@@ -1,16 +1,19 @@
-// Lore Text Rotation
 const loreTexts = [
-    '"If left uncontained, they will cause irreversible environmental collapse" - Department of Biohazard Control',
-    "These mutants need to be captured...",
+  '"If left uncontained, they will cause irreversible environmental collapse." - Department of Biohazard Control',
+  "2046: wildlife is no longer background noise. It is the threat signal.",
+  "Capture reports indicate mutation behavior is spreading through abandoned transit, forests, and coastal zones.",
+  "Agents with verified cards may request Vault clearance and rank assessment."
 ];
 
 let loreIndex = 0;
-const loreElement = document.getElementById('lore-text');
+const loreElement = document.getElementById("lore-text");
 
 function showLore() {
-    loreElement.textContent = loreTexts[loreIndex];
-    loreIndex = (loreIndex + 1) % loreTexts.length;
+  if (!loreElement) return;
+
+  loreElement.textContent = loreTexts[loreIndex];
+  loreIndex = (loreIndex + 1) % loreTexts.length;
 }
 
 showLore();
-setInterval(showLore, 4000); // rotates every 4 seconds
+window.setInterval(showLore, 4200);

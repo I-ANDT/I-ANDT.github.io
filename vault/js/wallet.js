@@ -1,159 +1,157 @@
+// Import configuration from config/config.js
 const CONTRACT_ADDRESS = "0x6d74e823E3cFB94A4a395b74B1E7B0F5Ca5596A3"; // Polygon NFT contract
-const DESIRED_NFT_NAMES = ["Mutant #0"]; // Only this NFT collection can unlock
-const SCORE_MAP = {
-  "Mutant #001": 5,
-  "Mutant #002": 2,
-  "Mutant #003": 1
-};
-const CONTRACT_ABI = [
-  "function balanceOf(address owner) view returns (uint256)",
-  "function name() view returns (string)"
-];
+const ALCHEMY_API = "https://polygon-mainnet.g.alchemy.com/v2/-Qpug5c39c7LOIsdRWZPH";
 
+const DESIRED_FILTER = "by i&t";
+const SCORE_MAP = {
+  "bull": 3,
+  "schlaflos": 1,
+  "Crocodyne": 2,
+  "KATZ!": 1,
+  "Choris": 3,
+  "#001": 5,
+  "snuggin": 1,
+  "#002": 2,
+  "L46": 1,
+  "K46": 1,
+  "Venom": 1,
+  "#003": 1,
+  "Valentine": 1,
+  "ape": 1,
+  "tuesday": 1,
+  "sealpollo": 1,
+  "hellfire": 1,
+  "angel": 1,
+  "momoka": 1,
+  "downvote": 1,
+  "wen": 1,
+  "kaito": 1,
+  "cruise": 1,
+  "Goldstruck": 2,
+  "Naga": 2,
+  "Listen": 1,
+};
+
+const walletForm = document.getElementById("walletForm");
+const walletAddressInput = document.getElementById("walletAddressInput");
 const connectBtn = document.getElementById("connectBtn");
 const statusDiv = document.getElementById("status");
 const contentDiv = document.getElementById("exclusive-content");
 const exclusiveMessage = document.getElementById("exclusive-message");
 
+function isWalletAddress(value) {
+  return /^0x[a-fA-F0-9]{40}$/.test(value.trim());
+}
+
 async function initProfileCard() {
   const address = localStorage.getItem("walletAddress");
-  if (!address) return; // no wallet connected yet
+  if (!address || typeof drawProfileCard !== "function") return;
 
   try {
-    // Fetch NFT info first (optional, you already do it in verifyAccess)
     const profileData = await fetch(`https://avatar-artists-guild.web.app/api/mashers/latest?wallet=${address}`)
-      .then(r => r.json());
+      .then(response => response.json());
 
-    // Draw the card
     drawProfileCard(profileData);
   } catch (err) {
     console.error("Failed to fetch avatar data:", err);
   }
 }
 
+// Fetches owned NFTs filtered by the contract address from Alchemy
 async function fetchNFTs(address) {
   const url = `${ALCHEMY_API}/getNFTs/?owner=${address}&contractAddresses[]=${CONTRACT_ADDRESS}`;
-  const res = await fetch(url);
-  const data = await res.json();
-  return data.ownedNfts || [];
+  try {
+    const res = await fetch(url);
+    if (!res.ok) throw new Error(`Alchemy API error: ${res.statusText}`);
+    const data = await res.json();
+    console.log("Raw Alchemy data:", data); // Debugging
+    return data.ownedNfts || [];
+  } catch (error) {
+    console.error("Error fetching from Alchemy:", error);
+    return [];
+  }
 }
 
-window.addEventListener("load", async () => {
-  if (!window.ethereum) return;
+async function verifyAccess(address) {
+  const normalizedAddress = address.trim().toLowerCase();
+  let levelScore = 0;
+  const matchedCards = [];
 
-  const provider = new ethers.BrowserProvider(window.ethereum);
+  statusDiv.innerText = "Verifying NFT ownership live via Alchemy...";
+  connectBtn.disabled = true;
 
-  // Check if user already authorized this site
-  const accounts = await provider.send("eth_accounts", []);
-
-  if (accounts.length === 0) return;
-
-  const address = accounts[0];
-  localStorage.setItem("walletAddress", address);
-
-  await verifyAccess(provider, address);
-});
-
-async function verifyAccess(provider, address) {
-  const network = await provider.getNetwork();
-  if (network.chainId !== 137n) {
-    statusDiv.innerText = "⚠️ Please switch to Polygon network";
-    return;
-  }
-
-  statusDiv.innerText = "🔎 Checking access...";
-
-  const contract = new ethers.Contract(
-    CONTRACT_ADDRESS,
-    CONTRACT_ABI,
-    provider
-  );
-
-  const balance = await contract.balanceOf(address);
-
-  if (balance === 0n) {
-    statusDiv.innerHTML = `
-    ⛔ You do not own any Mashi Mutant cards<br><br>
-    If you think this is a mistake, try reconnecting here:<br><br><br>
-    <a href="../vault/vault2.html" class="feature-btn" id="mailbox-link">
-      Vault Work 2.0 (CSV-based)
-    </a>
-  `;
-    return;
-  }
-
-  // Fetch NFTs (Alchemy or your fetchNFTs)
-  const nfts = await fetchNFTs(address);
-
-  const matchedNFTs = [];
+  const nfts = await fetchNFTs(normalizedAddress);
 
   for (const nft of nfts) {
-    const name = nft.metadata?.name || nft.title || "";
+    // 1. Get the raw title from the Alchemy payload
+    const nftTitle = nft.title || (nft.metadata && nft.metadata.name) || "";
+    const lowerNftTitle = nftTitle.toLowerCase();
 
-    if (DESIRED_NFT_NAMES.some(desired => name.includes(desired))) {
-      matchedNFTs.push({
-        name,
-        tokenId: nft.tokenId,
-        image: nft.media?.[0]?.gateway || null,
-        contract: nft.contract?.address
-      });
+    // 2. First, make sure it belongs to the "by i&t" collection
+    if (lowerNftTitle.includes(DESIRED_FILTER.toLowerCase())) {
+
+      let matchFound = false;
+
+      // 3. Loop through your SCORE_MAP keys to find a partial, case-insensitive match
+      for (const key of Object.keys(SCORE_MAP)) {
+        if (lowerNftTitle.includes(key.toLowerCase())) {
+          levelScore += SCORE_MAP[key];
+          matchedCards.push(key); // Stores the clean map key (e.g., "schlaflos")
+          matchFound = true;
+          break; // Stop checking other keys once we find a match for this NFT
+        }
+      }
+
+      // 4. Fallback if it has "by i&t" but none of your specific keywords match
+      if (!matchFound) {
+        levelScore += 1; // Default score fallback
+        matchedCards.push(nftTitle);
+      }
     }
   }
 
-  if (matchedNFTs.length > 0) {
-    // ✅ STORE RESULT
+  connectBtn.disabled = false;
 
-    // store a level score based on card name, Mutant #001 = 5 point, Mutant #002 = 2 points, Mutant #003 = 1 point
-
-    const levelScore = matchedNFTs.reduce((sum, nft) => {
-      const score = Object.entries(SCORE_MAP).find(([key]) => nft.name.includes(key))?.[1] || 0;
-      return sum + score;
-    }, 0);
-
-    localStorage.setItem("dbc_access", JSON.stringify({
-      address,
-      count: matchedNFTs.length,
-      names: matchedNFTs.map(n => n.name),
-      levelScore: levelScore,
-      //  nfts: matchedNFTs
-    }));
-    statusDiv.innerText = `✅ Access granted (${matchedNFTs.length} card${matchedNFTs.length > 1 ? "s" : ""})`;
-    contentDiv.style.display = "block";
-    exclusiveMessage.style.display = "block";
-    connectBtn.style.display = "none";
-    initProfileCard();
-
-  }
-  else {
-    statusDiv.innerHTML = `
-    ⛔ Sorry Recruit, you haven't captured any Mutant yet. Go out there, capture sum and unlock your vault access!<br><br>
-    If you think this is a mistake, try reconnecting here:<br><br><br>
-    <a href="../vault/vault2.html" class="feature-btn" id="mailbox-link">
-      Vault Work 2.0 (CSV-based)
-    </a>
-  `;
-  }
-}
-
-connectBtn.onclick = async () => {
-  if (!window.ethereum) {
-    statusDiv.innerText = "❌ Wallet not detected";
+  if (matchedCards.length === 0) {
+    statusDiv.innerText = "Access denied. You do not hold any verified Mutation cards in this wallet.";
+    contentDiv.style.display = "none";
     return;
   }
 
-  try {
-    const provider = new ethers.BrowserProvider(window.ethereum);
-    await provider.send("eth_requestAccounts", []);
-    const signer = await provider.getSigner();
-    const address = await signer.getAddress();
+  // Preserve your local storage updates exactly as they were
+  localStorage.setItem("walletAddress", normalizedAddress);
+  localStorage.setItem("dbc_access", JSON.stringify({
+    address: normalizedAddress,
+    count: matchedCards.length,
+    cards: matchedCards,
+    levelScore
+  }));
 
-    localStorage.setItem("walletAddress", address);
+  statusDiv.innerText = `Access granted. ${matchedCards.length} card${matchedCards.length > 1 ? "s" : ""} verified. Level Score: ${levelScore}`;
+  contentDiv.style.display = "block";
+  walletForm.style.display = "none";
+  initProfileCard();
+}
 
-    await verifyAccess(provider, address);
+walletForm.addEventListener("submit", event => {
+  event.preventDefault();
+  const address = walletAddressInput.value;
 
-  } catch (err) {
-    console.error(err);
-    statusDiv.innerText = "⚠️ Wallet connection failed";
+  if (!isWalletAddress(address)) {
+    statusDiv.innerText = "Please enter a valid wallet address beginning with 0x.";
+    return;
   }
-};
 
+  verifyAccess(address).catch(error => {
+    console.error(error);
+    connectBtn.disabled = false;
+    statusDiv.innerText = "Verification failed. Please try again.";
+  });
+});
+
+window.addEventListener("load", () => {
+  const savedAddress = localStorage.getItem("walletAddress");
+  if (savedAddress) {
+    walletAddressInput.value = savedAddress;
+  }
+});
