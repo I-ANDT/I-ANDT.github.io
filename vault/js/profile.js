@@ -11,7 +11,7 @@ async function drawProfileCard(userData) {
     "kaito": 1, "cruise": 1, "goldstruck": 2, "Naga Moto": 2, "Listen": 1
   };
   // Calculate maximum total score dynamically based on active collection size
-  const MAX_POSSIBLE_SCORE = Object.values(SCORE_MAP).reduce((sum, val) => sum + val, 0) + 30;
+  const MAX_POSSIBLE_SCORE = Object.values(SCORE_MAP).reduce((sum, val) => sum + val, 0) + 20;
 
   const canvas = document.getElementById("profileCanvas");
   const finalImg = document.getElementById("finalAgentCard");
