@@ -2,11 +2,9 @@ import { SCORE_MAP } from "../../config/config.js";
 
 const MAGAZINE_HEADLINES = [
   "City Archives Confirm New Collector Class",
-  "Underground Markets Track Rare Mutation Surge",
   "DBC Analysts Stunned By Capture Record",
   "Neon District Hails Latest Specimen Hunter",
-  "Vault Signals Spike After Midnight Verification"
-];
+  "Exclusive: Inside the Mind of a Top Collector",];
 
 async function drawMagazineCover(userData = {}, dbcAccess = {}) {
   const avatarImages = await loadAvatarImages(userData);
@@ -56,7 +54,6 @@ function renderMagazineCover(dbcAccess, avatarImages) {
   const agentName = dbcAccess.agentName || localStorage.getItem("agentName") || "UNKNOWN";
   const cardCount = dbcAccess.count || 0;
   const levelScore = dbcAccess.levelScore || 0;
-  const rank = getRank(levelScore);
   const headline = MAGAZINE_HEADLINES[Math.abs(hashString(agentName)) % MAGAZINE_HEADLINES.length];
 
   ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -96,8 +93,8 @@ function renderMagazineCover(dbcAccess, avatarImages) {
   ctx.font = "bold 24px 'Courier New', monospace";
   wrapText(ctx, headline.toUpperCase(), canvas.width / 2, 728, 600, 30, "center");
 
-  drawMagazineBox(ctx, 74, 810, 238, 86, "ACHIEVEMENTS", `${cardCount} CARDS // ${levelScore} SCORE`);
-  drawMagazineBox(ctx, 424, 810, 238, 86, "CLEARANCE", rank.label.replace("_", " "));
+  drawMagazineBox(ctx, 74, 810, 238, 86, "ACHIEVEMENTS", `${cardCount} CARDS COLLECTED`);
+  drawMagazineBox(ctx, 424, 810, 238, 86, "SCORE", `${levelScore} POINTS`);
 
   ctx.fillStyle = "#FF3BB8";
   ctx.font = "900 28px 'Courier New', monospace";
