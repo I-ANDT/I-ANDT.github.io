@@ -29,13 +29,16 @@
         </header>
 
         <main>
-            <section class="vault-hero">
+            <section class="vault-hero" id="vaultIntro">
                 <div>
                     <p class="eyebrow">Owner verification</p>
                     <h1>Unlock your DBC agent clearance.</h1>
                     <p>Enter your wallet address to verify captured Mutant cards, calculate your level score, and
                         generate your agent profile.</p>
                     <form id="walletForm" class="wallet-form">
+                        <label for="agentNameInput">Agent name</label>
+                        <input id="agentNameInput" class="wallet-input" name="agentName" type="text"
+                            autocomplete="nickname" maxlength="18" placeholder="Your collector name" required>
                         <label for="walletAddressInput">Wallet address</label>
                         <div class="wallet-input-row">
                             <input id="walletAddressInput" class="wallet-input" name="walletAddress" type="text"
@@ -50,15 +53,30 @@
             <section id="exclusive-content" style="display:none;">
                 <p class="eyebrow">Identity verified</p>
                 <h2>Welcome, Agent.</h2>
-                <p>Your credentials have been authenticated. Profile rendering is active.</p>
-                <canvas id="profileCanvas" width="736" height="552" style="display:none;"></canvas>
-                <img id="finalAgentCard" alt="Generated DBC agent card">
+                <p>Your credentials have been authenticated. Your clearance card is ready.</p>
+                <article class="collector-artifact">
+                    <h3>Clearance Card</h3>
+                    <canvas id="profileCanvas" width="736" height="552" style="display:none;"></canvas>
+                    <img id="finalAgentCard" alt="Generated DBC agent card">
+                </article>
+            </section>
+
+            <section id="magazine-content" style="display:none;">
+                <p class="eyebrow">Collector feature</p>
+                <h2>Mutation Weekly</h2>
+                <p>Your verified collector profile has been selected for Issue #046.</p>
+                <article class="collector-artifact magazine-artifact">
+                    <h3>Magazine Cover</h3>
+                    <canvas id="magazineCanvas" width="736" height="1000" style="display:none;"></canvas>
+                    <img id="finalMagazineCover" alt="Generated Mutation Weekly collector cover">
+                </article>
             </section>
         </main>
     </div>
 
+    <script type="module" src="js/profile.js"></script>
+    <script type="module" src="js/magazinecover.js"></script>
     <script type="module" src="js/wallet.js"></script>
-    <script src="js/profile.js" defer></script>
 </body>
 
 </html>
