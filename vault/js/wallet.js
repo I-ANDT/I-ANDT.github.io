@@ -1,8 +1,6 @@
-// Import configuration from config/config.js
-const CONTRACT_ADDRESS = "0x6d74e823E3cFB94A4a395b74B1E7B0F5Ca5596A3"; // Polygon NFT contract
-const ALCHEMY_API = "https://polygon-mainnet.g.alchemy.com/v2/-Qpug5c39c7LOIsdRWZPH";
+import { ALCHEMY_API, CONTRACT_ADDRESS } from "../../config/config.js";
 
-const DESIRED_FILTER = "i&t";
+const DESIRED_FILTER = "by i&t";
 const SCORE_MAP = {
   "bull": 3,
   "schlaflos": 1,
@@ -37,7 +35,6 @@ const walletAddressInput = document.getElementById("walletAddressInput");
 const connectBtn = document.getElementById("connectBtn");
 const statusDiv = document.getElementById("status");
 const contentDiv = document.getElementById("exclusive-content");
-const exclusiveMessage = document.getElementById("exclusive-message");
 
 function isWalletAddress(value) {
   return /^0x[a-fA-F0-9]{40}$/.test(value.trim());
@@ -57,7 +54,6 @@ async function initProfileCard() {
   }
 }
 
-// Fetches owned NFTs filtered by the contract address from Alchemy
 async function fetchNFTs(address) {
   let allNfts = [];
   let pageKey = null;
@@ -65,36 +61,30 @@ async function fetchNFTs(address) {
 
   try {
     while (keepFetching) {
-      // Append the pageKey to the URL if we have one from a previous page
       let url = `${ALCHEMY_API}/getNFTs/?owner=${address}&contractAddresses[]=${CONTRACT_ADDRESS}`;
       if (pageKey) {
-        url += `&pageKey=${pageKey}`;
+        url += `&pageKey=${encodeURIComponent(pageKey)}`;
       }
 
       const res = await fetch(url);
-      if (!res.ok) throw new Error(`Alchemy API error: ${res.statusText}`);
-      
+      if (!res.ok) throw new Error(`Alchemy API error: ${res.status} ${res.statusText}`);
+
       const data = await res.json();
-      
-      // Combine newly fetched NFTs with our master array
+
       if (data.ownedNfts && data.ownedNfts.length > 0) {
         allNfts = allNfts.concat(data.ownedNfts);
       }
 
-      // If Alchemy returns a pageKey, it means there are more items to fetch
       if (data.pageKey) {
         pageKey = data.pageKey;
       } else {
-        keepFetching = false; // No more pages left!
+        keepFetching = false;
       }
     }
 
-    console.log(`Total fetched NFTs from Alchemy: ${allNfts.length}`, allNfts); // Debugging
     return allNfts;
-
   } catch (error) {
     console.error("Error fetching from Alchemy:", error);
-    // Return whatever we managed to fetch before the error hit, or fallback empty
     return allNfts.length > 0 ? allNfts : [];
   }
 }
@@ -110,28 +100,23 @@ async function verifyAccess(address) {
   const nfts = await fetchNFTs(normalizedAddress);
 
   for (const nft of nfts) {
-    // 1. Get the raw title from the Alchemy payload
     const nftTitle = nft.title || (nft.metadata && nft.metadata.name) || "";
     const lowerNftTitle = nftTitle.toLowerCase();
 
-    // 2. First, make sure it belongs to the "by i&t" collection
     if (lowerNftTitle.includes(DESIRED_FILTER.toLowerCase())) {
-
       let matchFound = false;
 
-      // 3. Loop through your SCORE_MAP keys to find a partial, case-insensitive match
       for (const key of Object.keys(SCORE_MAP)) {
         if (lowerNftTitle.includes(key.toLowerCase())) {
           levelScore += SCORE_MAP[key];
-          matchedCards.push(key); // Stores the clean map key (e.g., "schlaflos")
+          matchedCards.push(nftTitle);
           matchFound = true;
-          break; // Stop checking other keys once we find a match for this NFT
+          break;
         }
       }
 
-      // 4. Fallback if it has "by i&t" but none of your specific keywords match
       if (!matchFound) {
-        levelScore += 1; // Default score fallback
+        levelScore += 1;
         matchedCards.push(nftTitle);
       }
     }
@@ -139,13 +124,13 @@ async function verifyAccess(address) {
 
   connectBtn.disabled = false;
 
-  if (matchedCards.length === 0) {
-    statusDiv.innerText = "Access denied. You do not hold any verified Mutation cards in this wallet.";
+/*   if (matchedCards.length === 0) {
+    statusDiv.innerText = "Access denied. This wallet does not hold any verified NFT with \"by i&t\" in the name.";
     contentDiv.style.display = "none";
+    walletForm.style.display = "grid";
     return;
-  }
+  } */
 
-  // Preserve your local storage updates exactly as they were
   localStorage.setItem("walletAddress", normalizedAddress);
   localStorage.setItem("dbc_access", JSON.stringify({
     address: normalizedAddress,

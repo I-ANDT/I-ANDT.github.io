@@ -121,7 +121,7 @@ async function drawProfileCard(userData) {
         numericLevel = 7;
       } else if (completionPercentage >= 35) {
         rank = "LEVEL_6 [ELITE_OPERATIVE]";
-        rankColor = "#C0C0C0";
+        rankColor = "#d3f06d";
         numericLevel = 6;
       } else if (completionPercentage >= 25) {
         rank = "LEVEL_5 [VETERAN_AGENT]";
@@ -143,6 +143,10 @@ async function drawProfileCard(userData) {
         rank = "LEVEL_1 [TRAINEE]";
         rankColor = "#00FFEE";
         numericLevel = 1;
+      } else {
+        rank = "LEVEL_0 [RECRUIT]";
+        rankColor = "#00FFEE";
+        numericLevel = 0;
       }
     }
 
@@ -204,7 +208,7 @@ async function drawProfileCard(userData) {
       ctx.fillStyle = rankColor;
       ctx.textAlign = "center";
       ctx.textBaseline = "middle";
-      ctx.fillText(numericLevel === 10 ? "★ OVERSEER ★" : "★ PREMIUM ★", 0, 2);
+      ctx.fillText(numericLevel === 10 ? "★ OVERSEER ★" : "★ VIP ★", 0, 2);
       ctx.restore();
     }
 
