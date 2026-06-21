@@ -28,5 +28,6 @@ export const SCORE_MAP = {
   "cruise": 1,
   "goldstruck": 2,
   "naga": 2,
-  "listen": 1
+  "listen": 1,
+  "vegas ": 2,
 };
