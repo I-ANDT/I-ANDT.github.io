@@ -90,12 +90,12 @@ async function verifyAccess(address) {
 
   connectBtn.disabled = false;
 
-  if (matchedCards.length === 0) {
+/*   if (matchedCards.length === 0) {
     statusDiv.innerText = "Access denied. This wallet does not hold any verified NFT with \"by i&t\" in the name.";
     contentDiv.style.display = "none";
     if (magazineContentDiv) magazineContentDiv.style.display = "none";
     return;
-  }
+  } */
 
   localStorage.setItem("walletAddress", normalizedAddress);
   localStorage.setItem("agentName", agentName);
