@@ -54,7 +54,7 @@ function drawClearanceCard(userData, dbcAccess, avatarImages) {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
 
-    drawAvatar(ctx, avatarImages, 88, 126, 190, 300);
+    drawAvatar(ctx, avatarImages, 88, 150, 190, 300);
 
     const textX = canvas.width - 410;
     const startY = 214;
